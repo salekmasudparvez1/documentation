@@ -36,7 +36,7 @@ export const categorySchema = z.object({
   title: z.string(),
   description: z.string(),
   slug: z.string(),
-  icon: z.string().optional(),
+  icon: z.string().trim().min(1),
   order: z.number().int().nonnegative(),
   status: z.enum(['draft', 'published', 'archived']),
   tags: z.array(z.string()).optional(),
@@ -52,7 +52,7 @@ export const topicSchema = z.object({
   order: z.number().int().nonnegative(),
   status: z.enum(['draft', 'published', 'archived']),
   tags: z.array(z.string()).optional(),
-  icon: z.string().optional(),
+  icon: z.string().trim().min(1),
   prerequisites: z.array(z.string()).optional(),
 });
 

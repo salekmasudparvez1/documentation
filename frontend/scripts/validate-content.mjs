@@ -1,15 +1,20 @@
-import fs from 'node:fs/promises';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+const contentSources = {
+  categories: 'https://raw.githubusercontent.com/salekmasudparvez1/documentation/refs/heads/main/db/categories.json',
+  topics: 'https://raw.githubusercontent.com/salekmasudparvez1/documentation/refs/heads/main/db/topics.json',
+  lessons: 'https://raw.githubusercontent.com/salekmasudparvez1/documentation/refs/heads/main/db/lessons.json',
+};
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const projectRoot = path.resolve(__dirname, '..');
+const readJson = async (url) => {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Failed to load content from ${url}: ${response.status} ${response.statusText}`);
+  }
+  return response.json();
+};
 
-const readJson = async (filePath) => JSON.parse(await fs.readFile(filePath, 'utf-8'));
-
-const categories = await readJson(path.join(projectRoot, 'src/data/categories.json'));
-const topics = await readJson(path.join(projectRoot, 'src/data/topics.json'));
-const lessons = await readJson(path.join(projectRoot, 'src/data/lessons.json'));
+const categories = await readJson(contentSources.categories);
+const topics = await readJson(contentSources.topics);
+const lessons = await readJson(contentSources.lessons);
 
 const issues = [];
 
@@ -31,6 +36,9 @@ const categoryRefs = new Set(categoryIds);
 const topicRefs = new Set(topicIds);
 
 for (const topic of topics) {
+  if (typeof topic.icon !== 'string' || topic.icon.trim().length === 0) {
+    issues.push(`Topic ${topic.id} must define an icon name in the remote db.`);
+  }
   if (!categoryRefs.has(topic.categoryId)) {
     issues.push(`Topic ${topic.id} references missing category ${topic.categoryId}.`);
   }
@@ -39,6 +47,12 @@ for (const topic of topics) {
 for (const lesson of lessons) {
   if (!topicRefs.has(lesson.topicId)) {
     issues.push(`Lesson ${lesson.id} references missing topic ${lesson.topicId}.`);
+  }
+
+  for (const category of categories) {
+    if (typeof category.icon !== 'string' || category.icon.trim().length === 0) {
+      issues.push(`Category ${category.id} must define an icon name in the remote db.`);
+    }
   }
 
   for (const prerequisite of lesson.prerequisites || []) {

@@ -1,33 +1,129 @@
 ---
 import { getTopicNavigation } from '../lib/content-registry';
+import Icon from './Icon.astro';
 
 const navigation = getTopicNavigation();
 const currentPath = Astro.url.pathname;
 ---
-<aside data-docs-sidebar class="w-full max-w-xs shrink-0 rounded-3xl border border-slate-200 bg-white p-4 shadow-lg shadow-slate-200/40 dark:border-slate-800 dark:bg-slate-900 dark:shadow-black/20 lg:w-72">
-  <div class="mb-4 flex items-center justify-between">
-    <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Topics</h2>
+<aside
+  data-docs-sidebar
+  class="docs-sidebar w-full max-w-xs shrink-0 rounded-2xl border p-2.5 shadow-sm lg:w-60"
+>
+  <!-- Header -->
+  <div class="mb-2 flex items-center justify-between border-b px-1.5 pb-2.5" style="border-color: var(--border-subtle);">
+    <div>
+      <p class="text-[9px] font-bold uppercase tracking-[0.16em]" style="color: var(--accent);">
+        DOC_26
+      </p>
+      <h2 class="mt-0.5 text-[13px] font-bold" style="color: var(--text-strong);">
+        Explore topics
+      </h2>
+    </div>
+    <span
+      class="rounded-full px-1.5 py-0.5 text-[9px] font-bold"
+      style="background-color: var(--accent-soft); color: var(--accent);"
+    >
+      Library
+    </span>
   </div>
-  <nav aria-label="Documentation navigation" class="sidebar-scroll space-y-4">
+
+  <!-- Navigation -->
+  <nav aria-label="Documentation navigation" class="sidebar-scroll space-y-2">
+    <!-- Home link -->
+    <a
+      href="/docs"
+      aria-current={currentPath === '/docs' ? 'page' : undefined}
+      class:list={[
+        'sidebar-home flex items-center gap-2 rounded-lg px-2.5 py-2 text-[12px] font-bold transition',
+        currentPath === '/docs'
+          ? 'text-white shadow-sm'
+          : 'hover:text-[var(--accent)]'
+      ]}
+      style={currentPath === '/docs'
+        ? 'background-color: var(--accent); color: var(--panel);'
+        : 'color: var(--text);'}
+    >
+      <span aria-hidden="true">⌂</span>
+      <span>Documentation home</span>
+    </a>
+
+    <!-- Categories -->
     {navigation.map((category) => {
       const isCurrentCategory = currentPath.startsWith(`/docs/${category.slug}`);
+      const isExactCategory = currentPath === `/docs/${category.slug}`;
+
       return (
-        <div class="space-y-2">
-          <a
-            href={`/docs/${category.slug}`}
-            class={`block rounded-lg px-3 py-2 text-sm font-semibold transition ${isCurrentCategory ? 'bg-sky-50 text-sky-700 dark:bg-sky-950/50 dark:text-sky-300' : 'text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800'}`}
+        <div class="sidebar-group" data-sidebar-group>
+          <div class="sidebar-category-row flex items-center gap-0.5">
+            <a
+              href={`/docs/${category.slug}`}
+              aria-current={isExactCategory ? 'page' : undefined}
+              class:list={[
+                'sidebar-category flex min-w-0 flex-1 items-center gap-1.5 rounded-lg px-2.5 py-2 text-[12px] font-bold transition',
+                isCurrentCategory
+                  ? ''
+                  : 'hover:bg-[var(--panel-hover)]'
+              ]}
+              style={isCurrentCategory
+                ? 'background-color: var(--accent-soft); color: var(--accent);'
+                : 'color: var(--text);'}
+            >
+              <span
+                class="sidebar-category-icon inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md"
+                style="background-color: var(--panel-muted);"
+              >
+                <Icon name={category.icon} size={13} />
+              </span>
+              <span class="min-w-0 flex-1 truncate">{category.title}</span>
+              <span class="text-[9px] font-semibold" style="color: var(--muted-soft);">
+                {category.topics.length}
+              </span>
+            </a>
+
+            <!-- Group toggle -->
+            <button
+              type="button"
+              class="sidebar-group-toggle"
+              data-sidebar-group-toggle
+              aria-expanded={isCurrentCategory ? 'true' : 'false'}
+              aria-label={`${isCurrentCategory ? 'Collapse' : 'Expand'} ${category.title}`}
+            >
+              <span aria-hidden="true">{isCurrentCategory ? '⌃' : '⌄'}</span>
+            </button>
+          </div>
+
+          <!-- Topics -->
+          <div
+            class:list={[
+              'sidebar-topics ml-2.5 mt-0.5 space-y-0.5 border-l pl-1.5',
+              isCurrentCategory ? '' : 'is-collapsed'
+            ]}
+            style="border-color: var(--border);"
+            data-sidebar-group-content
           >
-            {category.title}
-          </a>
-          <div class="space-y-1 pl-3">
             {category.topics.map((topic) => {
-              const isActive = currentPath === `/docs/${category.slug}/${topic.slug}` || currentPath.startsWith(`/docs/${category.slug}/${topic.slug}/`);
+              const isActive =
+                currentPath === `/docs/${category.slug}/${topic.slug}` ||
+                currentPath.startsWith(`/docs/${category.slug}/${topic.slug}/`);
+
               return (
                 <a
                   href={`/docs/${category.slug}/${topic.slug}`}
-                  class={`block rounded-lg px-3 py-2 text-sm transition ${isActive ? 'bg-slate-200 text-slate-900 dark:bg-slate-700 dark:text-white' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'}`}
+                  aria-current={isActive ? 'page' : undefined}
+                  class:list={[
+                    'sidebar-topic relative block rounded-md px-2.5 py-1.5 text-[11px] leading-4 transition',
+                    isActive
+                      ? 'font-semibold text-white shadow-sm'
+                      : 'hover:bg-[var(--panel-hover)]'
+                  ]}
+                  style={isActive
+                    ? 'background-color: var(--accent); color: var(--panel);'
+                    : 'color: var(--muted);'}
                 >
-                  {topic.title}
+                  <span class="flex items-center gap-2">
+                    <Icon name={topic.icon} size={12} class="shrink-0 opacity-75" />
+                    <span class="truncate">{topic.title}</span>
+                  </span>
                 </a>
               );
             })}

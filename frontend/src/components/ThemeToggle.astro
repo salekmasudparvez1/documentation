@@ -1,37 +1,89 @@
 <button
   id="theme-toggle"
   type="button"
-  class="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white/80 p-2 text-sm font-medium text-slate-700 shadow-sm transition hover:border-sky-400 hover:text-sky-600 dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-200 dark:hover:border-sky-500 dark:hover:text-sky-300"
+  class="theme-toggle inline-flex items-center justify-center rounded-lg border p-1.5 text-sm font-medium transition"
+  style="border-color: var(--border-strong); background-color: var(--accent-soft); color: var(--panel);"
   aria-label="Toggle color theme"
+  title="Theme: System"
 >
-  <span class="theme-toggle-icon">🌙</span>
+  <span class="theme-toggle-icon" aria-hidden="true">🖥️</span>
+  <span class="sr-only theme-toggle-label">System theme</span>
 </button>
 
 <script is:inline>
-  const root = document.documentElement;
-  const applyTheme = (theme) => {
-    const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    root.classList.toggle('dark', isDark);
-    const icon = document.querySelector('#theme-toggle .theme-toggle-icon');
-    if (icon) {
-      icon.textContent = isDark ? '☀️' : '🌙';
+  (() => {
+    const STORAGE_KEY = 'theme';
+    const root = document.documentElement;
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const THEMES = ['light', 'dark', 'system'];
+    const ICONS = { light: '☀️', dark: '🌙', system: '🖥️' };
+    const LABELS = { light: 'Light theme', dark: 'Dark theme', system: 'System theme' };
+
+    // Resolve actual dark state from a stored preference
+    const resolveDark = (theme) =>
+      theme === 'dark' || (theme === 'system' && media.matches);
+
+    // Apply a theme (light | dark | system) to the document
+    const applyTheme = (theme) => {
+      root.classList.toggle('dark', resolveDark(theme));
+      root.dataset.theme = theme;
+
+      const btn = document.getElementById('theme-toggle');
+      if (!btn) return;
+
+      const icon = btn.querySelector('.theme-toggle-icon');
+      const label = btn.querySelector('.theme-toggle-label');
+
+      if (icon) icon.textContent = ICONS[theme];
+      if (label) label.textContent = LABELS[theme];
+      btn.setAttribute('title', `Theme: ${theme[0].toUpperCase()}${theme.slice(1)}`);
+      btn.setAttribute('aria-label', `${LABELS[theme]} — click to switch`);
+    };
+
+    // Get current stored theme (defaults to system)
+    const getStoredTheme = () => {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      return THEMES.includes(saved) ? saved : 'system';
+    };
+
+    // Initial paint — do this before DOM ready to avoid flash
+    applyTheme(getStoredTheme());
+
+    // Wire up after DOM is ready
+    const setup = () => {
+      const btn = document.getElementById('theme-toggle');
+      if (!btn) return;
+
+      btn.addEventListener('click', () => {
+        const current = getStoredTheme();
+        const next = THEMES[(THEMES.indexOf(current) + 1) % THEMES.length];
+
+        if (next === 'system') {
+          localStorage.removeItem(STORAGE_KEY);
+        } else {
+          localStorage.setItem(STORAGE_KEY, next);
+        }
+
+        applyTheme(next);
+      });
+
+      // React to OS-level changes only when in "system" mode
+      const onSystemChange = () => {
+        if (getStoredTheme() === 'system') applyTheme('system');
+      };
+
+      if (media.addEventListener) {
+        media.addEventListener('change', onSystemChange);
+      } else {
+        media.addListener(onSystemChange); // Safari < 14 fallback
+      }
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setup, { once: true });
+    } else {
+      setup();
     }
-  };
-
-  const storedTheme = localStorage.getItem('theme');
-  const preferredTheme = storedTheme || 'system';
-  applyTheme(preferredTheme);
-
-  document.getElementById('theme-toggle')?.addEventListener('click', () => {
-    const currentTheme = root.classList.contains('dark') ? 'dark' : 'light';
-    const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    localStorage.setItem('theme', nextTheme);
-    applyTheme(nextTheme);
-  });
-
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
-    if (!localStorage.getItem('theme')) {
-      applyTheme(event.matches ? 'dark' : 'light');
-    }
-  });
+  })();
 </script>

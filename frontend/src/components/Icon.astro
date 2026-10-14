@@ -1,0 +1,51 @@
+---
+import {
+  Brain,
+  BrainCircuit,
+  Calculator,
+  Circle,
+  Code,
+  Database,
+  FileCode,
+  GitBranch,
+  LayoutTemplate,
+  Monitor,
+  Network,
+  Radar,
+  Search,
+  Server,
+  Settings,
+  Toolbox,
+} from '@lucide/astro';
+
+interface Props {
+  name?: string;
+  size?: number;
+  class?: string;
+}
+
+const { name = 'circle', size = 18, class: className = '' } = Astro.props;
+
+const iconMap = {
+  brain: Brain,
+  code: Code,
+  monitor: Monitor,
+  toolbox: Toolbox,
+  search: Search,
+  'file-code': FileCode,
+  'layout-template': LayoutTemplate,
+  'brain-circuit': BrainCircuit,
+  radar: Radar,
+  network: Network,
+  'git-branch': GitBranch,
+  calculator: Calculator,
+  database: Database,
+  server: Server,
+  settings: Settings,
+  circle: Circle,
+} as const;
+
+const IconComponent = iconMap[name.toLowerCase() as keyof typeof iconMap] ?? Circle;
+---
+
+<IconComponent size={size} class={className} aria-hidden="true" />

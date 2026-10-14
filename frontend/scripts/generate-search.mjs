@@ -5,11 +5,23 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
 
-const readJson = async (filePath) => JSON.parse(await fs.readFile(filePath, 'utf-8'));
+const contentSources = {
+  categories: 'https://raw.githubusercontent.com/salekmasudparvez1/documentation/refs/heads/main/db/categories.json',
+  topics: 'https://raw.githubusercontent.com/salekmasudparvez1/documentation/refs/heads/main/db/topics.json',
+  lessons: 'https://raw.githubusercontent.com/salekmasudparvez1/documentation/refs/heads/main/db/lessons.json',
+};
 
-const categories = await readJson(path.join(projectRoot, 'src/data/categories.json'));
-const topics = await readJson(path.join(projectRoot, 'src/data/topics.json'));
-const lessons = await readJson(path.join(projectRoot, 'src/data/lessons.json'));
+const readJson = async (url) => {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Failed to load content from ${url}: ${response.status} ${response.statusText}`);
+  }
+  return response.json();
+};
+
+const categories = await readJson(contentSources.categories);
+const topics = await readJson(contentSources.topics);
+const lessons = await readJson(contentSources.lessons);
 
 const topicMap = new Map(topics.map((topic) => [topic.id, topic]));
 const categoryMap = new Map(categories.map((category) => [category.id, category]));

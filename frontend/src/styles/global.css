@@ -1,84 +1,543 @@
 @import "tailwindcss";
 
+/* ============================================
+   THEME TOKENS
+   ============================================ */
 :root {
-  --bg: #f8fafc;
-  --panel: #ffffff;
+  color-scheme: light;
+
+  --bg: #f1f7f4;
+  --bg-gradient: rgba(16, 185, 129, 0.06);
+  --panel: #fffefa;
+  --panel-muted: #f0f8f4;
+  --panel-hover: #e8f5ef;
   --text: #0f172a;
+  --text-strong: #020617;
   --muted: #475569;
-  --border: rgba(15, 23, 42, 0.12);
+  --muted-soft: #64748b;
+  --border: rgba(8, 127, 91, 0.18);
+  --border-strong: rgba(8, 127, 91, 0.34);
+  --border-subtle: rgba(8, 127, 91, 0.12);
   --shadow: rgba(15, 23, 42, 0.06);
-  --accent: #0284c7;
+  --shadow-md: rgba(8, 127, 91, 0.08);
+  --shadow-lg: rgba(8, 127, 91, 0.14);
+  --accent: #087f5b;
+  --accent-hover: #066649;
+  --accent-soft: rgba(8, 127, 91, 0.1);
+  --accent-glow: rgba(8, 127, 91, 0.18);
+  --highlight: #84cc16;
+  --highlight-soft: rgba(132, 204, 22, 0.45);
+  --scrollbar: rgba(8, 127, 91, 0.35);
+  --scrollbar-hover: rgba(8, 127, 91, 0.55);
+  --overlay: rgba(15, 23, 42, 0.42);
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+  --transition-fast: 160ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 220ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 320ms cubic-bezier(0.4, 0, 0.2, 1);
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.75rem;
+  --radius-full: 9999px;
 }
 
 .dark {
+  color-scheme: dark;
+
   --bg: #020817;
-  --panel: #0f172a;
+  --bg-gradient: rgba(101, 214, 162, 0.05);
+  --panel: #0f1f1a;
+  --panel-muted: #0b1b17;
+  --panel-hover: #142b24;
   --text: #e2e8f0;
+  --text-strong: #f8fafc;
   --muted: #cbd5e1;
-  --border: rgba(148, 163, 184, 0.25);
-  --shadow: rgba(15, 23, 42, 0.35);
-  --accent: #38bdf8;
+  --muted-soft: #94a3b8;
+  --border: rgba(101, 214, 162, 0.22);
+  --border-strong: rgba(101, 214, 162, 0.42);
+  --border-subtle: rgba(101, 214, 162, 0.1);
+  --shadow: rgba(0, 0, 0, 0.35);
+  --shadow-md: rgba(0, 0, 0, 0.45);
+  --shadow-lg: rgba(0, 0, 0, 0.55);
+  --accent: #65d6a2;
+  --accent-hover: #8ae0b8;
+  --accent-soft: rgba(101, 214, 162, 0.12);
+  --accent-glow: rgba(101, 214, 162, 0.22);
+  --highlight: #a3e635;
+  --highlight-soft: rgba(163, 230, 53, 0.45);
+  --scrollbar: rgba(101, 214, 162, 0.3);
+  --scrollbar-hover: rgba(101, 214, 162, 0.5);
+  --overlay: rgba(0, 0, 0, 0.62);
+  --code-bg: #0a1512;
+  --code-text: #d1fae5;
+}
+
+/* ============================================
+   BASE RESET
+   ============================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 html,
 body {
   margin: 0;
+  padding: 0;
   min-height: 100%;
-  background: var(--bg);
+  background-color: var(--bg);
   color: var(--text);
-  font-family: Inter, "Segoe UI", sans-serif;
+  font-family: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color var(--transition-smooth),
+    color var(--transition-smooth);
 }
 
 body {
-  background-image: radial-gradient(circle at top, rgba(14, 165, 233, 0.08), transparent 35%);
+  background-image: linear-gradient(180deg,
+      var(--bg-gradient),
+      transparent 18rem);
+  background-attachment: fixed;
 }
 
-* {
-  box-sizing: border-box;
-}
-
-img {
+img,
+svg,
+video,
+canvas {
   max-width: 100%;
   display: block;
 }
 
 a {
   text-decoration: none;
+  color: inherit;
+  transition: color var(--transition-fast),
+    opacity var(--transition-fast);
 }
 
-.prose {
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--accent-soft);
+  color: var(--text-strong);
+}
+
+.site-header input::selection {
+  background: #bef264;
+  color: #0f172a;
+}
+
+/* Focus visible */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ============================================
+   SCROLLBARS
+   ============================================ */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: var(--radius-full);
+  background-color: var(--scrollbar);
+  transition: background-color var(--transition-fast);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-hover);
+}
+
+/* ============================================
+   LAYOUT — DOCS FRAME
+   ============================================ */
+.docs-frame {
+  align-items: flex-start;
+}
+
+.docs-frame>main {
+  min-width: 0;
+  width: 100%;
+  max-width: 54rem;
+  margin-inline: auto;
+}
+
+.docs-frame article,
+.docs-frame section {
+  border-radius: var(--radius-lg);
+  transition: background-color var(--transition-smooth),
+    border-color var(--transition-smooth),
+    box-shadow var(--transition-smooth);
+}
+
+.docs-frame main>section,
+.docs-frame main>article,
+.docs-frame main>div>article,
+.docs-frame main>div>section {
+  background-color: var(--panel);
+  border-color: var(--border-subtle);
+  border-top-color: var(--border-strong);
+  box-shadow: 0 8px 24px var(--shadow-md);
+  transition: background-color var(--transition-smooth),
+    border-color var(--transition-smooth),
+    box-shadow var(--transition-smooth),
+    transform var(--transition-smooth);
+}
+
+.docs-frame main>section:hover,
+.docs-frame main>article:hover {
+  box-shadow: 0 12px 32px var(--shadow-lg);
+}
+
+/* Accent color overrides */
+.docs-frame main .text-sky-600,
+.docs-frame main .text-sky-700 {
+  color: var(--accent);
+}
+
+.docs-frame main .border-slate-200 {
+  border-color: var(--border-subtle);
+}
+
+.docs-frame main .bg-slate-50,
+.docs-frame main .bg-slate-100 {
+  background-color: var(--panel-muted);
+}
+
+.docs-frame main .bg-white,
+.docs-frame main .dark\:bg-slate-900,
+.docs-frame main .dark\:bg-slate-950,
+.docs-frame main .bg-slate-950 {
+  background-color: var(--panel);
+}
+
+.docs-frame main .bg-slate-50,
+.docs-frame main .bg-slate-100,
+.docs-frame main .bg-slate-800 {
+  background-color: var(--panel-muted);
+}
+
+.docs-frame main .text-slate-900,
+.docs-frame main .text-slate-800 {
   color: var(--text);
 }
 
-.prose h1,
-.prose h2,
-.prose h3,
-.prose h4,
-.prose h5,
-.prose h6 {
-  scroll-margin-top: 4rem;
+.docs-frame main .text-slate-600,
+.docs-frame main .text-slate-700 {
+  color: var(--muted);
 }
 
-.prose p,
-.prose li,
-.prose blockquote {
-  line-height: 1.8;
+.content-surface {
+  background: var(--panel);
+  border-color: var(--border);
+  color: var(--text);
 }
 
-pre {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+.content-muted {
+  background: var(--panel-muted);
+  border-color: var(--border);
+  color: var(--muted);
+}
+
+.content-callout {
+  background: var(--accent-soft);
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+.content-example {
+  background: var(--accent-soft);
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+.content-code {
+  background: var(--code-bg);
+  border-color: var(--border);
+}
+
+.content-heading {
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text);
+}
+
+.content-table-header {
+  background: var(--panel-muted);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.content-table-cell {
+  border-color: var(--border);
+  color: var(--muted);
+}
+
+/* Dark mode overrides for sidebar */
+.dark .docs-sidebar .bg-slate-100,
+.dark .docs-sidebar .bg-slate-800 {
+  background-color: var(--panel-hover);
+}
+
+.dark .docs-sidebar .text-slate-900,
+.dark .docs-sidebar .text-slate-800,
+.dark .docs-sidebar .text-slate-700 {
+  color: var(--text);
+}
+
+.dark .docs-sidebar .text-slate-600,
+.dark .docs-sidebar .text-slate-500 {
+  color: var(--muted);
+}
+
+.dark .docs-frame main .border-slate-200,
+.dark .docs-frame main .border-slate-800 {
+  border-color: var(--border);
+}
+
+/* ============================================
+   SIDEBAR — DESKTOP
+   ============================================ */
+.desktop-sidebar-shell {
+  position: sticky;
+  top: 4.25rem;
+  height: calc(100svh - 5rem);
+  transition: width var(--transition-smooth);
+}
+
+.desktop-sidebar-shell>#desktop-sidebar-content {
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar) transparent;
+  transition: opacity var(--transition-smooth),
+    visibility var(--transition-smooth);
 }
 
+.desktop-sidebar-shell>#desktop-sidebar-content::-webkit-scrollbar {
+  width: 5px;
+}
+
+.desktop-sidebar-shell>#desktop-sidebar-content::-webkit-scrollbar-thumb {
+  border-radius: var(--radius-full);
+  background: var(--scrollbar);
+}
+
+.desktop-sidebar-shell>#desktop-sidebar-content::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-hover);
+}
+
+/* Collapse button */
+.sidebar-collapse-button {
+  position: absolute;
+  top: 0.7rem;
+  right: -0.7rem;
+  z-index: 2;
+  display: inline-flex;
+  width: 1.5rem;
+  height: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: var(--panel);
+  color: var(--accent);
+  font-size: 1.25rem;
+  line-height: 1;
+  box-shadow: 0 3px 10px var(--accent-glow);
+  cursor: pointer;
+  transition: background-color var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.sidebar-collapse-button:hover {
+  background: var(--accent);
+  color: var(--panel);
+  transform: scale(1.08);
+  box-shadow: 0 4px 14px var(--accent-glow);
+}
+
+.sidebar-collapse-button:active {
+  transform: scale(0.96);
+}
+
+.sidebar-collapse-button:focus-visible {
+  outline: 3px solid var(--highlight-soft);
+  outline-offset: 2px;
+}
+
+.dark .sidebar-collapse-button {
+  border-color: var(--border);
+  background: var(--panel);
+  color: var(--accent);
+}
+
+.dark .sidebar-collapse-button:hover {
+  background: var(--accent);
+  color: #062116;
+}
+
+/* Collapsed state */
+.desktop-sidebar-shell.is-collapsed {
+  width: 1.5rem;
+}
+
+.desktop-sidebar-shell.is-collapsed #desktop-sidebar-content {
+  visibility: hidden;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.desktop-sidebar-shell.is-collapsed .sidebar-collapse-button {
+  right: -0.65rem;
+}
+
+/* ============================================
+   SIDEBAR — CONTENT
+   ============================================ */
+.docs-sidebar {
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  border-color: var(--border);
+  border-top: 3px solid var(--accent);
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-smooth),
+    border-color var(--transition-smooth);
+}
+
+.sidebar-category-icon {
+  color: var(--accent);
+  transition: color var(--transition-fast);
+}
+
+.sidebar-topic {
+  position: relative;
+  transition: color var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.sidebar-topic[aria-current="page"]::before {
+  position: absolute;
+  top: 0.45rem;
+  bottom: 0.45rem;
+  left: -0.7rem;
+  width: 2px;
+  border-radius: var(--radius-full);
+  background: var(--highlight);
+  content: "";
+  transition: background-color var(--transition-fast);
+}
+
+.sidebar-topic:focus-visible,
+.sidebar-category:focus-visible,
+.sidebar-home:focus-visible {
+  outline: 3px solid var(--highlight-soft);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Group toggle */
+.sidebar-group-toggle {
+  display: inline-flex;
+  width: 1.1rem;
+  height: 1.1rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  color: currentColor;
+  font-size: 0.75rem;
+  line-height: 1;
+  opacity: 0.7;
+  transition: background-color var(--transition-fast),
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.sidebar-group-toggle:hover,
+.sidebar-group-toggle:focus-visible {
+  background: var(--accent-soft);
+  opacity: 1;
+  outline: none;
+}
+
+.sidebar-group-toggle:active {
+  transform: scale(0.92);
+}
+
+/* Collapsible topics */
+.sidebar-topics {
+  max-height: 30rem;
+  overflow: hidden;
+  opacity: 1;
+  transition: max-height var(--transition-smooth),
+    opacity var(--transition-fast),
+    margin var(--transition-smooth);
+}
+
+.sidebar-topics.is-collapsed {
+  max-height: 0;
+  margin-top: 0;
+  opacity: 0;
+}
+
+/* Sidebar scroll area */
 .sidebar-scroll {
-  max-height: min(58svh, 34rem);
+  max-height: min(68svh, 42rem);
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
-  scrollbar-color: rgba(100, 116, 139, 0.45) transparent;
+  scrollbar-color: var(--scrollbar) transparent;
 }
 
 .sidebar-scroll::-webkit-scrollbar {
@@ -86,10 +545,31 @@ pre {
 }
 
 .sidebar-scroll::-webkit-scrollbar-thumb {
-  border-radius: 999px;
-  background: rgba(100, 116, 139, 0.45);
+  border-radius: var(--radius-full);
+  background: var(--scrollbar);
+  transition: background-color var(--transition-fast);
 }
 
+.sidebar-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-hover);
+}
+
+@media (min-width: 1024px) {
+  .desktop-sidebar-shell .sidebar-scroll {
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+@media (max-width: 1023px) {
+  .desktop-sidebar-shell {
+    display: none;
+  }
+}
+
+/* ============================================
+   SIDEBAR — MOBILE
+   ============================================ */
 .mobile-sidebar-panel {
   position: fixed;
   inset: 0;
@@ -99,8 +579,10 @@ pre {
 .mobile-sidebar-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(15, 23, 42, 0.42);
+  background: var(--overlay);
   backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  animation: backdrop-fade-in var(--transition-smooth) ease-out;
 }
 
 .mobile-sidebar-drawer {
@@ -108,13 +590,14 @@ pre {
   inset: 0.75rem 0.75rem auto;
   max-height: calc(100svh - 1.5rem);
   overflow-y: auto;
-  border-radius: 1.75rem;
+  border-radius: var(--radius-2xl);
   padding: 0.75rem;
-  background: var(--bg);
-  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.28);
+  background: var(--panel-muted);
+  box-shadow: 0 24px 70px var(--shadow-lg);
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  animation: sidebar-slide-in 180ms ease-out;
+  animation: sidebar-slide-in var(--transition-smooth) ease-out;
+  transition: background-color var(--transition-smooth);
 }
 
 .mobile-sidebar-drawer aside {
@@ -129,23 +612,249 @@ pre {
   overflow: hidden;
 }
 
+/* ============================================
+   ANIMATIONS
+   ============================================ */
 @keyframes sidebar-slide-in {
   from {
     opacity: 0;
     transform: translateY(-0.5rem) scale(0.98);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
 }
 
+@keyframes backdrop-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   PROSE / TYPOGRAPHY
+   ============================================ */
+.prose {
+  color: var(--text);
+  line-height: 1.75;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  scroll-margin-top: 4rem;
+  color: var(--text-strong);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+.prose p,
+.prose li,
+.prose blockquote {
+  line-height: 1.8;
+}
+
+.prose a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: var(--accent-soft);
+  text-underline-offset: 3px;
+  transition: color var(--transition-fast),
+    text-decoration-color var(--transition-fast);
+}
+
+.prose a:hover {
+  color: var(--accent-hover);
+  text-decoration-color: var(--accent);
+}
+
+.prose code {
+  background: var(--panel-muted);
+  color: var(--accent);
+  padding: 0.15em 0.4em;
+  border-radius: var(--radius-sm);
+  font-size: 0.875em;
+  font-weight: 500;
+  transition: background-color var(--transition-smooth),
+    color var(--transition-smooth);
+}
+
+.prose pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.35) transparent;
+  transition: background-color var(--transition-smooth);
+}
+
+.prose pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.prose blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 1rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+  transition: border-color var(--transition-smooth);
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.prose th,
+.prose td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.85rem;
+  text-align: left;
+  transition: border-color var(--transition-smooth),
+    background-color var(--transition-smooth);
+}
+
+.prose th {
+  background: var(--panel-muted);
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+/* ============================================
+   CODE / PRE
+   ============================================ */
+pre {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+pre::-webkit-scrollbar {
+  height: 6px;
+}
+
+pre::-webkit-scrollbar-thumb {
+  border-radius: var(--radius-full);
+  background: rgba(148, 163, 184, 0.35);
+}
+
+/* ============================================
+   LINK / INTERACTIVE TRANSITIONS
+   ============================================ */
+.docs-frame a:hover {
+  transition: border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.docs-frame a:active {
+  transform: scale(0.98);
+}
+
+/* ============================================
+   THEME TRANSITION OVERLAY
+   ============================================ */
+.theme-transition,
+.theme-transition *,
+.theme-transition *::before,
+.theme-transition *::after {
+  transition: background-color var(--transition-smooth) !important,
+    border-color var(--transition-smooth) !important,
+    color var(--transition-smooth) !important,
+    fill var(--transition-smooth) !important,
+    stroke var(--transition-smooth) !important,
+    box-shadow var(--transition-smooth) !important;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 640px) {
+
+  .docs-frame main>section,
+  .docs-frame main>article,
+  .docs-frame main>div>article,
+  .docs-frame main>div>section {
+    padding: 1rem;
+  }
+
+  .docs-frame main h1 {
+    font-size: 1.9rem;
+    line-height: 1.15;
+  }
+
+  .mobile-sidebar-drawer {
+    inset: 0.5rem 0.5rem auto;
+    max-height: calc(100svh - 1rem);
+    border-radius: var(--radius-xl);
+  }
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
 
-  .mobile-sidebar-drawer {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .mobile-sidebar-drawer,
+  .mobile-sidebar-backdrop {
     animation: none;
+  }
+}
+
+/* ============================================
+   PRINT
+   ============================================ */
+@media print {
+
+  .desktop-sidebar-shell,
+  .mobile-sidebar-panel,
+  .sidebar-collapse-button {
+    display: none !important;
+  }
+
+  .docs-frame>main {
+    max-width: 100%;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
   }
 }

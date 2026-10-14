@@ -1,13 +1,4 @@
-import siteData from '../data/site.json';
-import categoriesData from '../data/categories.json';
-import topicsData from '../data/topics.json';
-import lessonsData from '../data/lessons.json';
-import { categorySchema, lessonSchema, siteSchema, topicSchema } from './schemas';
-
-const site = siteSchema.parse(siteData);
-const categories = categorySchema.array().parse(categoriesData);
-const topics = topicSchema.array().parse(topicsData);
-const lessons = lessonSchema.array().parse(lessonsData);
+import { categories, lessons, site, topics } from './remote-content';
 
 export const publishedCategories = categories.filter((category) => category.status === 'published');
 export const publishedTopics = topics.filter((topic) => topic.status === 'published');

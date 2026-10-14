@@ -34,7 +34,7 @@ export async function renderSection(section: any) {
     case 'code': {
       const html = await renderCodeBlock(section.language || 'text', section.content);
       return `
-        <figure class="mt-6 overflow-hidden rounded-xl border border-slate-200 bg-slate-950 text-slate-50 dark:border-slate-700">
+        <figure class="content-code mt-6 overflow-hidden rounded-xl border text-slate-50">
           ${section.title ? `<figcaption class="border-b border-slate-700 px-4 py-2 text-sm font-medium text-slate-200">${section.title}</figcaption>` : ''}
           <div class="relative">
             <button class="copy-code absolute right-3 top-3 rounded-md border border-slate-700 bg-slate-800 px-2 py-1 text-xs text-slate-200 transition hover:bg-slate-700" data-copy-target="${section.id}">Copy</button>
@@ -45,11 +45,11 @@ export async function renderSection(section: any) {
       `;
     }
     case 'table': {
-      const headers = section.columns.map((column: string) => `<th class="border border-slate-200 bg-slate-50 px-3 py-2 text-left text-sm font-semibold text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">${column}</th>`).join('');
-      const rows = section.rows.map((row: unknown[]) => `<tr>${row.map((cell) => `<td class="border border-slate-200 px-3 py-2 text-sm text-slate-700 dark:border-slate-700 dark:text-slate-200">${String(cell)}</td>`).join('')}</tr>`).join('');
+      const headers = section.columns.map((column: string) => `<th class="content-table-header border px-3 py-2 text-left text-sm font-semibold">${column}</th>`).join('');
+      const rows = section.rows.map((row: unknown[]) => `<tr>${row.map((cell) => `<td class="content-table-cell border px-3 py-2 text-sm">${String(cell)}</td>`).join('')}</tr>`).join('');
       return `
-        <figure class="mt-6 overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900">
-          ${section.title ? `<figcaption class="px-4 py-3 text-sm font-semibold text-slate-700 dark:text-slate-200">${section.title}</figcaption>` : ''}
+        <figure class="content-surface mt-6 overflow-hidden rounded-xl border">
+          ${section.title ? `<figcaption class="content-heading px-4 py-3 text-sm font-semibold">${section.title}</figcaption>` : ''}
           <div class="overflow-x-auto">
             <table class="min-w-full border-collapse text-left">
               <thead><tr>${headers}</tr></thead>
@@ -61,21 +61,21 @@ export async function renderSection(section: any) {
     }
     case 'callout':
       return `
-        <aside class="mt-6 rounded-xl border border-sky-200 bg-sky-50 p-4 text-slate-700 shadow-sm dark:border-sky-500/30 dark:bg-sky-950/40 dark:text-slate-200">
+        <aside class="content-callout mt-6 rounded-xl border p-4 shadow-sm">
           <h3 class="mb-2 text-base font-semibold">${section.title || 'Note'}</h3>
           <div class="prose prose-slate max-w-none dark:prose-invert">${renderMarkdown(section.content)}</div>
         </aside>
       `;
     case 'formula':
       return `
-        <figure class="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-5 text-center dark:border-slate-700 dark:bg-slate-900">
+        <figure class="content-muted mt-6 rounded-xl border p-5 text-center">
           <div class="text-2xl font-medium text-slate-800 dark:text-slate-100">$${section.latex}$</div>
           ${section.caption ? `<figcaption class="mt-3 text-sm text-slate-600 dark:text-slate-300">${section.caption}</figcaption>` : ''}
         </figure>
       `;
     case 'checklist':
       return `
-        <div class="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900">
+        <div class="content-muted mt-6 rounded-xl border p-4">
           ${section.title ? `<h3 class="mb-3 text-base font-semibold text-slate-800 dark:text-slate-100">${section.title}</h3>` : ''}
           <ul class="space-y-2 text-sm text-slate-700 dark:text-slate-200">
             ${section.items.map((item: string) => `<li class="flex items-start gap-2"><span class="mt-1 inline-block h-2 w-2 rounded-full bg-sky-500"></span><span>${item}</span></li>`).join('')}
@@ -84,7 +84,7 @@ export async function renderSection(section: any) {
       `;
     case 'list':
       return `
-        <div class="mt-6 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-900">
+        <div class="content-surface mt-6 rounded-xl border p-4">
           ${section.title ? `<h3 class="mb-3 text-base font-semibold text-slate-800 dark:text-slate-100">${section.title}</h3>` : ''}
           <ul class="list-disc space-y-2 pl-5 text-slate-700 dark:text-slate-200">
             ${section.items.map((item: string) => `<li>${item}</li>`).join('')}
@@ -93,21 +93,21 @@ export async function renderSection(section: any) {
       `;
     case 'image':
       return `
-        <figure class="mt-6 overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900">
+        <figure class="content-surface mt-6 overflow-hidden rounded-xl border">
           <img src="${section.src}" alt="${section.alt}" class="w-full object-cover" />
           ${section.caption ? `<figcaption class="px-4 py-3 text-sm text-slate-600 dark:text-slate-300">${section.caption}</figcaption>` : ''}
         </figure>
       `;
     case 'example':
       return `
-        <div class="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 p-4 dark:border-emerald-500/30 dark:bg-emerald-950/30">
+        <div class="content-example mt-6 rounded-xl border p-4">
           ${section.title ? `<h3 class="mb-2 text-base font-semibold text-slate-800 dark:text-slate-100">${section.title}</h3>` : ''}
           <div class="prose prose-slate max-w-none dark:prose-invert">${renderMarkdown(section.content)}</div>
         </div>
       `;
     default:
       return `
-        <div class="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
+        <div class="content-muted mt-6 rounded-xl border p-4 text-sm">
           ${section.title || 'Unrendered section'}
         </div>
       `;

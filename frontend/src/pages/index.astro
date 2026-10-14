@@ -1,85 +1,906 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { getLatestLessons, registry } from '../lib/content-registry';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+import { getLatestLessons, registry } from "../lib/content-registry";
 
 const latestLessons = getLatestLessons(4);
-const publishedLessonCount = registry.lessons.filter((lesson) => lesson.status === 'published').length;
-const recentTopicCount = registry.topics.filter((topic) => topic.status === 'published').length;
+const publishedLessonCount = registry.lessons.filter(
+  (lesson) => lesson.status === "published",
+).length;
+const recentTopicCount = registry.topics.filter(
+  (topic) => topic.status === "published",
+).length;
+
+const stats = [
+  { value: registry.publishedCategories.length, label: "Categories" },
+  { value: recentTopicCount, label: "Topics" },
+  { value: publishedLessonCount, label: "Lessons" },
+  { value: latestLessons.length, label: "Updated" },
+];
 ---
 
-<BaseLayout title={`${registry.site.title} | Home`} description={registry.site.description}>
-  <div class="space-y-10">
-    <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-8">
-      <div class="grid gap-8 lg:grid-cols-[1.5fr_0.8fr] lg:items-end">
-        <div>
-          <p class="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-sky-600 dark:text-sky-300">Technology knowledge base</p>
-          <h1 class="text-4xl font-bold tracking-tight text-slate-900 dark:text-white">Learn deeply, build confidently.</h1>
-          <p class="mt-4 max-w-xl text-lg text-slate-600 dark:text-slate-300">
-            A practical digital library for AI, machine learning, web engineering, developer tools, and the mathematics behind modern systems.
+<BaseLayout
+  title={`${registry.site.title} | Home`}
+  description={registry.site.description}
+>
+  <div class="home-stack">
+    <!-- ==============================
+         HERO
+         ============================== -->
+    <section class="hero-panel" aria-labelledby="hero-title">
+      <div class="hero-glow" aria-hidden="true"></div>
+
+      <div class="hero-grid">
+        <!-- Left: copy -->
+        <div class="hero-copy">
+          <p class="hero-eyebrow">
+            <span class="hero-dot" aria-hidden="true"></span>
+            Welcome to DOC_26
           </p>
-          <div class="mt-6 flex flex-wrap gap-3">
-            <a href="/docs" class="rounded-full bg-sky-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-sky-500">Browse docs</a>
-            <a href="/search" class="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-sky-400 hover:text-sky-600 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200 dark:hover:border-sky-500 dark:hover:text-sky-300">Search content</a>
-          </div>
-        </div>
 
-        <div class="grid grid-cols-2 gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-950/60">
-          <div class="rounded-xl bg-white p-4 shadow-sm dark:bg-slate-900">
-            <div class="text-2xl font-bold text-slate-900 dark:text-white">{registry.publishedCategories.length}</div>
-            <div class="text-sm text-slate-600 dark:text-slate-300">Categories</div>
-          </div>
-          <div class="rounded-xl bg-white p-4 shadow-sm dark:bg-slate-900">
-            <div class="text-2xl font-bold text-slate-900 dark:text-white">{recentTopicCount}</div>
-            <div class="text-sm text-slate-600 dark:text-slate-300">Topics</div>
-          </div>
-          <div class="rounded-xl bg-white p-4 shadow-sm dark:bg-slate-900">
-            <div class="text-2xl font-bold text-slate-900 dark:text-white">{publishedLessonCount}</div>
-            <div class="text-sm text-slate-600 dark:text-slate-300">Lessons</div>
-          </div>
-          <div class="rounded-xl bg-white p-4 shadow-sm dark:bg-slate-900">
-            <div class="text-2xl font-bold text-slate-900 dark:text-white">{latestLessons.length}</div>
-            <div class="text-sm text-slate-600 dark:text-slate-300">Updated</div>
-          </div>
-        </div>
-      </div>
-    </section>
+          <h1 id="hero-title" class="hero-title">
+            Learn deeply.<br />
+            Build confidently.
+          </h1>
 
-    <section>
-      <div class="mb-4 flex items-center justify-between">
-        <h2 class="text-2xl font-semibold text-slate-900 dark:text-white">Browse by category</h2>
-      </div>
-      <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {registry.publishedCategories.map((category) => (
-          <a href={`/docs/${category.slug}`} class="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-sky-300 dark:border-slate-800 dark:bg-slate-900">
-            <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-sky-100 text-xl text-sky-700 dark:bg-sky-950/60 dark:text-sky-300">
-              {category.icon || '•'}
-            </div>
-            <h3 class="text-xl font-semibold text-slate-900 dark:text-white">{category.title}</h3>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">{category.description}</p>
-          </a>
-        ))}
-      </div>
-    </section>
+          <p class="hero-lead">
+            A practical digital library for AI, machine learning, web
+            engineering, developer tools, and the mathematics behind modern
+            systems.
+          </p>
 
-    <section>
-      <div class="mb-4 flex items-center justify-between">
-        <h2 class="text-2xl font-semibold text-slate-900 dark:text-white">Recently updated</h2>
-        <a href="/docs" class="text-sm font-medium text-sky-600 hover:text-sky-500 dark:text-sky-300">View all lessons</a>
-      </div>
-      <div class="grid gap-4 lg:grid-cols-2">
-        {latestLessons.map((lesson) => {
-          const topic = registry.topics.find((entry) => entry.id === lesson.topicId);
-          const category = topic ? registry.publishedCategories.find((entry) => entry.id === topic.categoryId) : undefined;
-          return (
-            <a href={`/docs/${category?.slug ?? 'docs'}/${topic?.slug ?? ''}/${lesson.slug}`} class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-sky-300 dark:border-slate-800 dark:bg-slate-900">
-              <div class="text-xs font-semibold uppercase tracking-[0.2em] text-sky-600 dark:text-sky-300">{category?.title ?? 'Category'}</div>
-              <h3 class="mt-2 text-xl font-semibold text-slate-900 dark:text-white">{lesson.title}</h3>
-              <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">{lesson.description}</p>
-              <div class="mt-3 text-xs text-slate-500 dark:text-slate-400">Updated {new Date(lesson.updatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+          <div class="hero-actions">
+            <a href="/docs" class="btn btn-primary">
+              Browse docs
+              <span class="btn-arrow" aria-hidden="true">→</span>
             </a>
-          );
-        })}
+            <a href="/search" class="btn btn-ghost">
+              <span aria-hidden="true">⌕</span>
+              Search content
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: stats -->
+        <div class="stats-panel">
+          {
+            stats.map((stat) => (
+              <div class="stat-card">
+                <div class="stat-value">{stat.value}</div>
+                <div class="stat-label">{stat.label}</div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================
+         CATEGORIES
+         ============================== -->
+    <section aria-labelledby="categories-title">
+      <header class="section-head">
+        <div>
+          <h2 id="categories-title" class="section-title">
+            Browse by category
+          </h2>
+          <p class="section-sub">
+            Structured learning paths across every discipline.
+          </p>
+        </div>
+      </header>
+
+      <div class="category-grid">
+        {
+          registry.publishedCategories.map((category) => (
+            <a href={`/docs/${category.slug}`} class="category-card">
+              <div class="category-icon">
+                <Icon name={category.icon} size={20} />
+              </div>
+              <h3 class="category-title">{category.title}</h3>
+              <p class="category-desc">{category.description}</p>
+              <div class="card-cta">
+                Explore
+                <span class="card-cta-arrow" aria-hidden="true">
+                  →
+                </span>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- ==============================
+         RECENT LESSONS
+         ============================== -->
+    <section aria-labelledby="recent-title">
+      <header class="section-head">
+        <div>
+          <h2 id="recent-title" class="section-title">Recently updated</h2>
+          <p class="section-sub">Fresh content from the library.</p>
+        </div>
+        <a href="/docs" class="view-all">
+          View all
+          <span aria-hidden="true">→</span>
+        </a>
+      </header>
+
+      <div class="lesson-grid">
+        {
+          latestLessons.map((lesson) => {
+            const topic = registry.topics.find(
+              (entry) => entry.id === lesson.topicId,
+            );
+            const category = topic
+              ? registry.publishedCategories.find(
+                  (entry) => entry.id === topic.categoryId,
+                )
+              : undefined;
+
+            return (
+              <a
+                href={`/docs/${category?.slug ?? "docs"}/${topic?.slug ?? ""}/${lesson.slug}`}
+                class="lesson-card"
+              >
+                <div class="lesson-eyebrow">
+                  <span class="lesson-dot" aria-hidden="true" />
+                  {category?.title ?? "Category"}
+                </div>
+                <h3 class="lesson-title">{lesson.title}</h3>
+                <p class="lesson-desc">{lesson.description}</p>
+                <div class="lesson-footer">
+                  <time class="lesson-date" datetime={lesson.updatedAt}>
+                    {new Date(lesson.updatedAt).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
+                  </time>
+                  <span class="lesson-read">
+                    Read
+                    <span class="card-cta-arrow" aria-hidden="true">
+                      →
+                    </span>
+                  </span>
+                </div>
+              </a>
+            );
+          })
+        }
       </div>
     </section>
   </div>
 </BaseLayout>
+
+<style>
+  /* ============================================
+     LAYOUT
+     ============================================ */
+  .home-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 2.75rem;
+  }
+
+  @media (min-width: 768px) {
+    .home-stack {
+      gap: 3.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .home-stack {
+      gap: 4.5rem;
+    }
+  }
+
+  /* ============================================
+     HERO
+     ============================================ */
+  .hero-panel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid var(--border);
+    background-color: var(--panel);
+    box-shadow: 0 10px 32px var(--shadow-md);
+    padding: 1.5rem;
+    transition:
+      background-color 320ms ease,
+      border-color 320ms ease,
+      box-shadow 320ms ease;
+  }
+
+  @media (min-width: 480px) {
+    .hero-panel {
+      padding: 1.75rem;
+      border-radius: 1.125rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hero-panel {
+      padding: 2.5rem;
+      border-radius: 1.25rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-panel {
+      padding: 3rem 3.25rem;
+    }
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: -5rem;
+    right: -5rem;
+    width: 14rem;
+    height: 14rem;
+    border-radius: 9999px;
+    background: radial-gradient(circle, var(--accent-glow), transparent 70%);
+    filter: blur(50px);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  @media (min-width: 768px) {
+    .hero-glow {
+      top: -6rem;
+      right: -6rem;
+      width: 18rem;
+      height: 18rem;
+      filter: blur(60px);
+    }
+  }
+
+  .hero-grid {
+    position: relative;
+    display: grid;
+    gap: 1.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .hero-grid {
+      gap: 2rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-grid {
+      grid-template-columns: 1.55fr 0.85fr;
+      align-items: end;
+      gap: 2.75rem;
+    }
+  }
+
+  .hero-copy {
+    max-width: 40rem;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin: 0 0 1rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px;
+    background-color: var(--accent-soft);
+    color: var(--accent);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  @media (min-width: 640px) {
+    .hero-eyebrow {
+      margin-bottom: 1.15rem;
+      padding: 0.4rem 0.85rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+    }
+  }
+
+  .hero-dot {
+    display: inline-block;
+    width: 0.35rem;
+    height: 0.35rem;
+    border-radius: 9999px;
+    background-color: var(--accent);
+  }
+
+  .hero-title {
+    margin: 0;
+    font-size: clamp(1.85rem, 6.5vw, 3.15rem);
+    font-weight: 900;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    color: var(--text-strong);
+  }
+
+  .hero-lead {
+    margin: 1.1rem 0 0;
+    max-width: 34rem;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--muted);
+  }
+
+  @media (min-width: 640px) {
+    .hero-lead {
+      margin-top: 1.35rem;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .hero-actions {
+      gap: 0.75rem;
+      margin-top: 1.85rem;
+    }
+  }
+
+  /* ============================================
+     BUTTONS
+     ============================================ */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.7rem 1.1rem;
+    border-radius: 0.7rem;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    line-height: 1;
+    text-decoration: none;
+    transition:
+      transform 200ms cubic-bezier(0.4, 0, 0.2, 1),
+      background-color 200ms ease,
+      border-color 200ms ease,
+      box-shadow 200ms ease,
+      color 200ms ease;
+  }
+
+  @media (min-width: 640px) {
+    .btn {
+      padding: 0.75rem 1.25rem;
+      border-radius: 0.75rem;
+      font-size: 0.875rem;
+    }
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .btn:active {
+    transform: translateY(0);
+  }
+
+  .btn-primary {
+    background-color: var(--accent);
+    color: var(--panel);
+    box-shadow: 0 5px 16px var(--accent-glow);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 9px 24px var(--accent-glow);
+  }
+
+  .btn-ghost {
+    border: 1px solid var(--border-strong);
+    background-color: var(--panel);
+    color: var(--text);
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .btn-arrow {
+    transition: transform 200ms ease;
+  }
+
+  .btn:hover .btn-arrow {
+    transform: translateX(3px);
+  }
+
+  /* ============================================
+     STATS
+     ============================================ */
+  .stats-panel {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6rem;
+    padding: 0.75rem;
+    border-radius: 0.9rem;
+    border: 1px solid var(--border);
+    background-color: var(--panel-muted);
+  }
+
+  @media (min-width: 480px) {
+    .stats-panel {
+      gap: 0.7rem;
+      padding: 0.85rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .stats-panel {
+      gap: 0.75rem;
+      padding: 1rem;
+      border-radius: 1rem;
+    }
+  }
+
+  .stat-card {
+    padding: 0.85rem 0.75rem;
+    border-radius: 0.65rem;
+    border: 1px solid var(--border-subtle);
+    background-color: var(--panel);
+    box-shadow: 0 3px 10px var(--shadow);
+    transition:
+      transform 200ms ease,
+      box-shadow 200ms ease;
+  }
+
+  @media (min-width: 640px) {
+    .stat-card {
+      padding: 1rem;
+      border-radius: 0.75rem;
+    }
+  }
+
+  .stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 18px var(--shadow-md);
+  }
+
+  .stat-value {
+    font-size: 1.3rem;
+    font-weight: 800;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: var(--accent);
+  }
+
+  @media (min-width: 640px) {
+    .stat-value {
+      font-size: 1.45rem;
+    }
+  }
+
+  .stat-label {
+    margin-top: 0.3rem;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  @media (min-width: 640px) {
+    .stat-label {
+      margin-top: 0.35rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+    }
+  }
+
+  /* ============================================
+     SECTION HEADS
+     ============================================ */
+  .section-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 1.15rem;
+  }
+
+  @media (min-width: 640px) {
+    .section-head {
+      gap: 1rem;
+      margin-bottom: 1.35rem;
+    }
+  }
+
+  .section-title {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    line-height: 1.25;
+    color: var(--text-strong);
+  }
+
+  @media (min-width: 640px) {
+    .section-title {
+      font-size: 1.35rem;
+    }
+  }
+
+  .section-sub {
+    margin: 0.3rem 0 0;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+
+  @media (min-width: 640px) {
+    .section-sub {
+      margin-top: 0.35rem;
+      font-size: 0.875rem;
+    }
+  }
+
+  .view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.775rem;
+    font-weight: 600;
+    color: var(--accent);
+    white-space: nowrap;
+    transition:
+      gap 200ms ease,
+      opacity 200ms ease;
+  }
+
+  @media (min-width: 640px) {
+    .view-all {
+      font-size: 0.8125rem;
+      gap: 0.35rem;
+    }
+  }
+
+  .view-all:hover {
+    gap: 0.55rem;
+    opacity: 0.85;
+  }
+
+  /* ============================================
+     CATEGORY CARDS
+     ============================================ */
+  .category-grid {
+    display: grid;
+    gap: 0.85rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 560px) {
+    .category-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .category-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.1rem;
+    }
+  }
+
+  .category-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.2rem;
+    border-radius: 0.9rem;
+    border: 1px solid var(--border-subtle);
+    background-color: var(--panel);
+    box-shadow: 0 3px 12px var(--shadow);
+    text-decoration: none;
+    transition:
+      transform 200ms cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 200ms ease,
+      box-shadow 200ms ease;
+  }
+
+  @media (min-width: 640px) {
+    .category-card {
+      padding: 1.35rem;
+      border-radius: 1rem;
+    }
+  }
+
+  .category-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+    box-shadow: 0 10px 28px var(--accent-glow);
+  }
+
+  .category-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 0.65rem;
+    background-color: var(--accent-soft);
+    color: var(--accent);
+    margin-bottom: 0.85rem;
+    transition: transform 200ms ease;
+  }
+
+  @media (min-width: 640px) {
+    .category-icon {
+      width: 2.65rem;
+      height: 2.65rem;
+      border-radius: 0.75rem;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .category-card:hover .category-icon {
+    transform: scale(1.07);
+  }
+
+  .category-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--text-strong);
+  }
+
+  @media (min-width: 640px) {
+    .category-title {
+      font-size: 1.05rem;
+    }
+  }
+
+  .category-desc {
+    margin: 0.4rem 0 0;
+    font-size: 0.8rem;
+    line-height: 1.55;
+    color: var(--muted);
+    flex: 1;
+  }
+
+  @media (min-width: 640px) {
+    .category-desc {
+      font-size: 0.8125rem;
+      line-height: 1.6;
+    }
+  }
+
+  .card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 1rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--accent);
+  }
+
+  @media (min-width: 640px) {
+    .card-cta {
+      margin-top: 1.15rem;
+      font-size: 0.75rem;
+    }
+  }
+
+  .card-cta-arrow {
+    display: inline-block;
+    transition: transform 200ms ease;
+  }
+
+  .category-card:hover .card-cta-arrow,
+  .lesson-card:hover .card-cta-arrow {
+    transform: translateX(3px);
+  }
+
+  /* ============================================
+     LESSON CARDS
+     ============================================ */
+  .lesson-grid {
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  @media (min-width: 700px) {
+    .lesson-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+  }
+
+  .lesson-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.2rem;
+    border-radius: 0.9rem;
+    border: 1px solid var(--border-subtle);
+    background-color: var(--panel);
+    box-shadow: 0 3px 12px var(--shadow);
+    text-decoration: none;
+    transition:
+      transform 200ms cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 200ms ease,
+      box-shadow 200ms ease;
+  }
+
+  @media (min-width: 640px) {
+    .lesson-card {
+      padding: 1.35rem;
+      border-radius: 1rem;
+    }
+  }
+
+  .lesson-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+    box-shadow: 0 10px 28px var(--accent-glow);
+  }
+
+  .lesson-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  @media (min-width: 640px) {
+    .lesson-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+    }
+  }
+
+  .lesson-dot {
+    display: inline-block;
+    width: 0.22rem;
+    height: 0.22rem;
+    border-radius: 9999px;
+    background-color: var(--accent);
+  }
+
+  .lesson-title {
+    margin: 0.5rem 0 0;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    color: var(--text-strong);
+  }
+
+  @media (min-width: 640px) {
+    .lesson-title {
+      margin-top: 0.55rem;
+      font-size: 1.05rem;
+    }
+  }
+
+  .lesson-desc {
+    margin: 0.4rem 0 0;
+    font-size: 0.8rem;
+    line-height: 1.55;
+    color: var(--muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex: 1;
+  }
+
+  @media (min-width: 640px) {
+    .lesson-desc {
+      font-size: 0.8125rem;
+      line-height: 1.6;
+    }
+  }
+
+  .lesson-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  @media (min-width: 640px) {
+    .lesson-footer {
+      margin-top: 1.15rem;
+      padding-top: 0.85rem;
+    }
+  }
+
+  .lesson-date {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--muted-soft);
+  }
+
+  @media (min-width: 640px) {
+    .lesson-date {
+      font-size: 0.75rem;
+    }
+  }
+
+  .lesson-read {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.22rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  @media (min-width: 640px) {
+    .lesson-read {
+      font-size: 0.75rem;
+    }
+  }
+
+  /* ============================================
+     THEME TRANSITIONS
+     ============================================ */
+  .hero-panel,
+  .stat-card,
+  .stats-panel,
+  .category-card,
+  .lesson-card {
+    transition:
+      background-color 320ms ease,
+      border-color 320ms ease,
+      box-shadow 320ms ease,
+      color 320ms ease,
+      transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .hero-title,
+  .hero-lead,
+  .hero-eyebrow,
+  .section-title,
+  .section-sub,
+  .category-title,
+  .category-desc,
+  .lesson-title,
+  .lesson-desc,
+  .stat-value,
+  .stat-label {
+    transition: color 320ms ease;
+  }
+
+  /* ============================================
+     REDUCED MOTION
+     ============================================ */
+  @media (prefers-reduced-motion: reduce) {
+    .btn,
+    .category-card,
+    .lesson-card,
+    .stat-card,
+    .card-cta-arrow,
+    .btn-arrow {
+      transition-duration: 0.01ms !important;
+    }
+
+    .btn:hover,
+    .category-card:hover,
+    .lesson-card:hover,
+    .stat-card:hover {
+      transform: none !important;
+    }
+  }
+</style>
