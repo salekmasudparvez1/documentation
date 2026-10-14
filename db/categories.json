@@ -1,5 +1,19 @@
 [
   {
+    "id": "deep-learning",
+    "title": "Deep Learning",
+    "description": "Deep learning is a subset of machine learning that uses neural networks with many layers to model complex patterns in data. It has been successfully applied to a wide range of tasks, including image recognition, natural language processing, and speech recognition.",
+    "slug": "deep-learning",
+    "icon": "brain",
+    "order": 0,
+    "status": "published",
+    "tags": [
+      "deep-learning",
+      "neural-networks",
+      "machine-learning"
+    ]
+  },
+  {
     "id": "ai-ml",
     "title": "AI & Machine Learning",
     "description": "Models, training loops, evaluation, and practical ML techniques.",
@@ -7,7 +21,11 @@
     "icon": "brain",
     "order": 1,
     "status": "published",
-    "tags": ["ai", "machine-learning", "deep-learning"]
+    "tags": [
+      "ai",
+      "machine-learning",
+      "deep-learning"
+    ]
   },
   {
     "id": "programming",
@@ -17,7 +35,11 @@
     "icon": "code",
     "order": 2,
     "status": "published",
-    "tags": ["python", "javascript", "software-engineering"]
+    "tags": [
+      "python",
+      "javascript",
+      "software-engineering"
+    ]
   },
   {
     "id": "web-development",
@@ -27,7 +49,11 @@
     "icon": "monitor",
     "order": 3,
     "status": "published",
-    "tags": ["javascript", "react", "nextjs"]
+    "tags": [
+      "javascript",
+      "react",
+      "nextjs"
+    ]
   },
   {
     "id": "tools",
@@ -37,6 +63,10 @@
     "icon": "toolbox",
     "order": 4,
     "status": "published",
-    "tags": ["git", "math", "systems"]
+    "tags": [
+      "git",
+      "math",
+      "systems"
+    ]
   }
 ]

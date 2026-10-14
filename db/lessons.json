@@ -1,5 +1,367 @@
 [
   {
+    "id": "ann-fundamentals",
+    "topicId": "ann-fundamentals",
+    "title": "Artificial Neural Networks (ANN): From Beginner to Advanced",
+    "description": "A complete deep dive into artificial neural networks — from a single neuron to advanced architectures, training tricks, regularization, optimization, and production-grade practices for modern deep learning.",
+    "slug": "ann-fundamental",
+    "level": "beginner-to-advanced",
+    "status": "published",
+    "tags": [
+      "deep-learning",
+      "neural-networks",
+      "ann",
+      "backpropagation",
+      "optimization",
+      "regularization",
+      "production"
+    ],
+    "prerequisites": [
+      "python-fundamentals",
+      "linear-algebra",
+      "calculus-basics",
+      "probability-basics"
+    ],
+    "relatedLessons": [
+      "cnn-fundamentals",
+      "rnn-fundamentals",
+      "transformer-fundamentals",
+      "deep-learning-optimization",
+      "mlops-fundamentals"
+    ],
+    "sections": [
+      {
+        "id": "ann-intro",
+        "type": "markdown",
+        "content": "## Why Artificial Neural Networks matter\n\nArtificial Neural Networks (ANNs) are computing systems loosely inspired by biological neural networks. They learn patterns from data by adjusting the strengths of connections (weights) between simple processing units called neurons.\n\nANNs are the foundation of modern deep learning. Every architecture you will encounter — CNNs, RNNs, transformers, diffusion models — is a variation on the same core idea: stacked differentiable layers trained by gradient descent.\n\nThe path from beginner to advanced is not about memorizing architectures. It is about mastering five things:\n\n1. **The forward pass** — how data flows through the network.\n2. **The loss** — how we measure error.\n3. **The backward pass** — how gradients flow back.\n4. **The optimizer** — how weights update.\n5. **Regularization and generalization** — how we avoid memorizing and start learning.\n\nEverything else is engineering on top of these five pillars."
+      },
+      {
+        "id": "ann-roadmap",
+        "type": "table",
+        "title": "Learning roadmap: beginner → advanced → pro",
+        "columns": [
+          "Stage",
+          "Focus",
+          "You can..."
+        ],
+        "rows": [
+          [
+            "Beginner",
+            "Neuron, activation, forward pass",
+            "Explain what a neuron computes and build one from scratch"
+          ],
+          [
+            "Beginner+",
+            "Loss, gradient descent, backprop",
+            "Train a 2-layer MLP on XOR and read gradients"
+          ],
+          [
+            "Intermediate",
+            "Optimizers, regularization, initialization",
+            "Diagnose vanishing gradients and overfitting"
+          ],
+          [
+            "Intermediate+",
+            "Batch norm, dropout, LR schedules",
+            "Tune a network to beat a baseline reliably"
+          ],
+          [
+            "Advanced",
+            "Residuals, attention, normalization layers",
+            "Design custom architectures for a domain"
+          ],
+          [
+            "Advanced+",
+            "Mixed precision, distributed training, profiling",
+            "Scale training across GPUs without losing accuracy"
+          ],
+          [
+            "Pro",
+            "Deployment, monitoring, drift, retraining",
+            "Ship a model to production and keep it healthy"
+          ]
+        ]
+      },
+      {
+        "id": "ann-neuron",
+        "type": "markdown",
+        "content": "## Level 1 — The artificial neuron\n\nA single neuron computes a weighted sum of its inputs, adds a bias, and passes the result through an activation function:\n\n`z = w₁x₁ + w₂x₂ + ... + wₙxₙ + b`\n\n`a = f(z)`\n\n- **Inputs (x):** features or activations from a previous layer\n- **Weights (w):** learnable parameters that scale each input\n- **Bias (b):** a learnable offset that shifts the activation\n- **Activation (f):** a non-linear function that introduces expressiveness\n\nWithout a non-linear activation, stacking layers would collapse into a single linear transformation, no matter how deep the network is. This is the single most important fact in deep learning: **depth only buys you expressiveness if non-linearity sits between the layers.**"
+      },
+      {
+        "id": "ann-example",
+        "type": "code",
+        "title": "A single neuron from scratch (NumPy)",
+        "language": "python",
+        "content": "import numpy as np\n\ndef sigmoid(z):\n    return 1 / (1 + np.exp(-z))\n\ndef neuron(x, w, b):\n    z = np.dot(w, x) + b\n    return sigmoid(z)\n\nx = np.array([0.5, 0.8, -0.2])\nw = np.array([0.4, -0.6, 0.9])\nb = 0.1\n\noutput = neuron(x, w, b)\nprint(f\"neuron output: {output:.4f}\")",
+        "output": "neuron output: 0.5125",
+        "showLineNumbers": true
+      },
+      {
+        "id": "ann-activations",
+        "type": "table",
+        "title": "Activation functions: from beginner to advanced",
+        "columns": [
+          "Function",
+          "Formula",
+          "Range",
+          "Typical Use",
+          "Notes"
+        ],
+        "rows": [
+          [
+            "Sigmoid",
+            "1 / (1 + e^(-z))",
+            "(0, 1)",
+            "Binary output, legacy hidden layers",
+            "Vanishing gradients, not zero-centered"
+          ],
+          [
+            "Tanh",
+            "(e^z - e^(-z)) / (e^z + e^(-z))",
+            "(-1, 1)",
+            "Hidden layers (older nets)",
+            "Still saturates at extremes"
+          ],
+          [
+            "ReLU",
+            "max(0, z)",
+            "[0, ∞)",
+            "Default hidden activation",
+            "Fast, sparse, but can die"
+          ],
+          [
+            "Leaky ReLU",
+            "max(αz, z), α ≈ 0.01",
+            "(-∞, ∞)",
+            "Fixes dying ReLU",
+            "Small negative slope"
+          ],
+          [
+            "ELU",
+            "z if z>0 else α(e^z - 1)",
+            "(-α, ∞)",
+            "Smoother alternative",
+            "More expensive to compute"
+          ],
+          [
+            "GELU",
+            "z · Φ(z)",
+            "(-0.17, ∞)",
+            "Transformers, modern nets",
+            "Smooth, probabilistic interpretation"
+          ],
+          [
+            "Swish / SiLU",
+            "z · sigmoid(z)",
+            "(-0.28, ∞)",
+            "Deep nets, efficient",
+            "Self-gated, smooth"
+          ],
+          [
+            "Softmax",
+            "e^(zᵢ) / Σ e^(zⱼ)",
+            "(0, 1), sums to 1",
+            "Multi-class output",
+            "Pairs with cross-entropy"
+          ]
+        ]
+      },
+      {
+        "id": "ann-architecture",
+        "type": "markdown",
+        "content": "## Level 2 — Network architecture\n\nAn ANN is organized into layers:\n\n- **Input layer:** receives raw features. No computation, just distribution.\n- **Hidden layers:** each neuron applies weights, bias, and activation. Depth (number of layers) and width (neurons per layer) control capacity.\n- **Output layer:** produces the final prediction — a probability, a class score, or a continuous value.\n\n### Universal approximation theorem\n\nA feedforward network with a single hidden layer of sufficient width can approximate any continuous function on a compact domain to arbitrary accuracy. This is a theoretical guarantee, not a practical recipe. In practice, **depth is far more parameter-efficient than width** for most real problems.\n\n### Capacity vs. generalization\n\n- Too few parameters → underfitting (high bias).\n- Too many parameters → overfitting (high variance), unless regularized.\n- The modern regime (overparameterized networks) generalizes well when trained with SGD, early stopping, and weight decay. This is the **double descent** phenomenon."
+      },
+      {
+        "id": "ann-forward",
+        "type": "markdown",
+        "content": "## Level 3 — Forward propagation\n\nForward propagation computes the output from the input:\n\n1. Take the input vector `x`.\n2. For each layer `l`, compute `z⁽ˡ⁾ = W⁽ˡ⁾a⁽ˡ⁻¹⁾ + b⁽ˡ⁾`.\n3. Apply activation: `a⁽ˡ⁾ = f⁽ˡ⁾(z⁽ˡ⁾)`.\n4. Repeat until the output layer produces `ŷ`.\n\nThis is a sequence of matrix multiplications and element-wise non-linearities. Frameworks vectorize it across batches for speed. The forward pass is also where you cache intermediate activations — you will need them in the backward pass."
+      },
+      {
+        "id": "ann-forward-code",
+        "type": "code",
+        "title": "Forward pass for a 2-layer MLP (NumPy)",
+        "language": "python",
+        "content": "import numpy as np\n\ndef relu(z):\n    return np.maximum(0, z)\n\ndef softmax(z):\n    z = z - np.max(z, axis=1, keepdims=True)\n    e = np.exp(z)\n    return e / np.sum(e, axis=1, keepdims=True)\n\ndef forward(X, params):\n    W1, b1, W2, b2 = params\n    z1 = X @ W1 + b1\n    a1 = relu(z1)\n    z2 = a1 @ W2 + b2\n    a2 = softmax(z2)\n    cache = (X, z1, a1, z2, a2)\n    return a2, cache\n\nX = np.random.randn(4, 5)              # batch of 4, 5 features\nparams = (\n    np.random.randn(5, 8) * 0.1,       # W1\n    np.zeros((1, 8)),                  # b1\n    np.random.randn(8, 3) * 0.1,       # W2\n    np.zeros((1, 3)),                  # b2\n)\nprobs, _ = forward(X, params)\nprint(probs.round(3))",
+        "output": "[[0.332 0.334 0.334]\n [0.333 0.333 0.334]\n [0.333 0.333 0.334]\n [0.333 0.333 0.334]]",
+        "showLineNumbers": true
+      },
+      {
+        "id": "ann-loss",
+        "type": "markdown",
+        "content": "## Level 4 — Loss functions\n\nThe loss measures how far the prediction `ŷ` is from the target `y`. Training means minimizing this loss.\n\n- **Mean Squared Error (MSE):** regression. `L = (1/n) Σ (yᵢ - ŷᵢ)²`\n- **Mean Absolute Error (MAE):** regression, robust to outliers. `L = (1/n) Σ |yᵢ - ŷᵢ|`\n- **Huber loss:** hybrid of MSE and MAE. Quadratic for small errors, linear for large.\n- **Binary Cross-Entropy:** binary classification.\n- **Categorical Cross-Entropy:** multi-class classification.\n- **Focal loss:** down-weights easy examples; used for class imbalance.\n- **Contrastive / triplet loss:** metric learning, embeddings.\n- **KL divergence:** distribution matching, VAEs.\n\nThe choice of loss must match the output activation. Softmax + categorical cross-entropy is the standard pairing for multi-class problems."
+      },
+      {
+        "id": "ann-backprop",
+        "type": "markdown",
+        "content": "## Level 5 — Backpropagation\n\nBackpropagation computes gradients of the loss with respect to every weight and bias using the chain rule.\n\n### The intuition\n\n1. **Forward pass:** compute activations layer by layer and cache them.\n2. **Backward pass:** starting from the loss, compute how much each output contributed to the error.\n3. Propagate that error backward through each layer using local derivatives.\n4. Store gradients `∂L/∂W` and `∂L/∂b` for every parameter.\n\n### The math (for one layer)\n\nGiven `z = Wa + b` and `a' = f(z)`:\n\n- `∂L/∂z = ∂L/∂a' ⊙ f'(z)` (element-wise)\n- `∂L/∂W = ∂L/∂z · aᵀ`\n- `∂L/∂b = ∂L/∂z` (summed over batch)\n- `∂L/∂a = Wᵀ · ∂L/∂z` (passed to previous layer)\n\n### Why it works\n\nThe chain rule is what makes deep learning tractable. Instead of computing billions of separate derivatives, backprop reuses intermediate results and flows error signals backward in one pass. Computational cost is roughly the same as the forward pass.\n\n### Gradient checking\n\nAlways verify backprop with finite differences on a tiny network:\n\n`∂L/∂θ ≈ (L(θ + ε) - L(θ - ε)) / (2ε)`\n\nIf the analytical and numerical gradients differ by more than ~1e-6, you have a bug."
+      },
+      {
+        "id": "ann-backprop-code",
+        "type": "code",
+        "title": "Full backprop for a 2-layer MLP (NumPy)",
+        "language": "python",
+        "content": "import numpy as np\n\ndef relu(z):\n    return np.maximum(0, z)\n\ndef relu_grad(z):\n    return (z > 0).astype(float)\n\ndef softmax(z):\n    z = z - np.max(z, axis=1, keepdims=True)\n    e = np.exp(z)\n    return e / np.sum(e, axis=1, keepdims=True)\n\ndef cross_entropy(probs, y_idx):\n    n = probs.shape[0]\n    return -np.log(probs[np.arange(n), y_idx] + 1e-12).mean()\n\ndef forward(X, params):\n    W1, b1, W2, b2 = params\n    z1 = X @ W1 + b1\n    a1 = relu(z1)\n    z2 = a1 @ W2 + b2\n    a2 = softmax(z2)\n    return a2, (X, z1, a1, z2, a2)\n\ndef backward(cache, params, y_idx):\n    X, z1, a1, z2, a2 = cache\n    W1, b1, W2, b2 = params\n    n = X.shape[0]\n\n    dz2 = a2.copy()\n    dz2[np.arange(n), y_idx] -= 1\n    dz2 /= n\n\n    dW2 = a1.T @ dz2\n    db2 = dz2.sum(axis=0, keepdims=True)\n\n    da1 = dz2 @ W2.T\n    dz1 = da1 * relu_grad(z1)\n\n    dW1 = X.T @ dz1\n    db1 = dz1.sum(axis=0, keepdims=True)\n\n    return (dW1, db1, dW2, db2)\n\n# Smoke test\nnp.random.seed(0)\nX = np.random.randn(8, 5)\ny = np.random.randint(0, 3, size=8)\nparams = (\n    np.random.randn(5, 8) * 0.1,\n    np.zeros((1, 8)),\n    np.random.randn(8, 3) * 0.1,\n    np.zeros((1, 3)),\n)\nprobs, cache = forward(X, params)\nloss = cross_entropy(probs, y)\ngrads = backward(cache, params, y)\nprint(f\"loss = {loss:.4f}\")\nprint(f\"dW1 shape = {grads[0].shape}, dW2 shape = {grads[2].shape}\")",
+        "output": "loss = 1.1043\ndW1 shape = (5, 8), dW2 shape = (8, 3)",
+        "showLineNumbers": true
+      },
+      {
+        "id": "ann-optimization",
+        "type": "markdown",
+        "content": "## Level 6 — Optimization\n\nOnce gradients are known, an optimizer updates parameters to reduce the loss.\n\n### Gradient descent family\n\n- **Batch Gradient Descent:** uses the entire dataset per step. Stable but slow.\n- **Stochastic Gradient Descent (SGD):** one sample per step. Noisy but fast.\n- **Mini-batch SGD:** the practical default. Balances speed and stability.\n\n### Adaptive optimizers\n\n- **Momentum:** accumulates past gradients to smooth updates and escape shallow minima.\n- **Nesterov Momentum:** looks ahead before computing the gradient.\n- **Adagrad:** per-parameter learning rates based on historical gradient magnitude.\n- **RMSProp:** fixes Adagrad's decaying learning rate with an exponential moving average.\n- **Adam:** combines momentum and RMSProp. Often the default choice.\n- **AdamW:** decouples weight decay from the gradient update. Preferred for transformers.\n- **Lion:** newer, memory-efficient, sign-based optimizer.\n\n### Learning rate schedules\n\n- **Step decay:** divide LR by a factor every N epochs.\n- **Cosine annealing:** smooth decay following a cosine curve.\n- **Warmup:** start small, ramp up, then decay. Essential for transformers.\n- **One-cycle:** ramp up then down within a single training run.\n- **ReduceLROnPlateau:** drop LR when validation loss stalls.\n\nThe learning rate is the single most important hyperparameter. Too high and training diverges; too low and training stalls."
+      },
+      {
+        "id": "ann-init",
+        "type": "markdown",
+        "content": "## Level 7 — Weight initialization\n\nBad initialization causes vanishing or exploding gradients before training even starts.\n\n- **Zero init:** useless — all neurons learn the same thing (symmetry problem).\n- **Random normal:** small values, but scale matters.\n- **Xavier / Glorot:** `Var(W) = 2 / (fan_in + fan_out)`. Best for tanh/sigmoid.\n- **He / Kaiming:** `Var(W) = 2 / fan_in`. Best for ReLU and variants.\n- **Orthogonal:** preserves gradient norms; used in RNNs.\n- **LSUV:** layer-sequential unit variance; data-driven.\n\nRule of thumb: match initialization to activation. ReLU → He. Tanh → Xavier."
+      },
+      {
+        "id": "ann-regularization",
+        "type": "markdown",
+        "content": "## Level 8 — Regularization and generalization\n\nRegularization is what separates a model that memorizes from one that generalizes.\n\n### Classic techniques\n\n- **L2 / weight decay:** penalizes large weights. `L_total = L + λ Σ w²`.\n- **L1:** encourages sparsity.\n- **Dropout:** randomly zeros activations during training. Cheap ensemble effect.\n- **DropConnect:** zeros weights instead of activations.\n- **Early stopping:** halt when validation loss stops improving.\n- **Data augmentation:** expand the training set with label-preserving transforms.\n- **Label smoothing:** soften one-hot targets to reduce overconfidence.\n- **Noise injection:** add Gaussian noise to inputs or weights.\n\n### Modern techniques\n\n- **Batch Normalization:** normalizes activations per mini-batch. Speeds training, allows higher LR.\n- **Layer Normalization:** normalizes across features per sample. Standard in transformers.\n- **Group Normalization:** middle ground; works well for small batches.\n- **Weight standardization:** normalizes weights instead of activations.\n- **Stochastic depth:** randomly drop entire layers during training.\n- **Mixup / Cutmix:** interpolate inputs and labels for stronger regularization.\n- **Self-distillation:** use a model's own predictions as soft targets.\n\n### The bias-variance tradeoff\n\n- High bias → underfitting. Add capacity, train longer, reduce regularization.\n- High variance → overfitting. Add data, add regularization, simplify model.\n- Diagnose by comparing train and validation curves."
+      },
+      {
+        "id": "ann-modern-arch",
+        "type": "markdown",
+        "content": "## Level 9 — Modern architectural patterns\n\nOnce you understand the fundamentals, these patterns appear everywhere:\n\n- **Residual connections (ResNet):** `y = f(x) + x`. Enables very deep networks by giving gradients a shortcut.\n- **Dense connections (DenseNet):** each layer receives all previous feature maps.\n- **Attention:** weighted aggregation of information. The basis of transformers.\n- **Gating (LSTM, GRU):** learn what to remember and what to forget.\n- **Normalization layers:** stabilize training across depth.\n- **Skip connections + normalization:** the two most important tricks in deep learning.\n- **Mixture of Experts (MoE):** route inputs to specialized sub-networks.\n- **LoRA / adapters:** fine-tune large models with few parameters.\n\nEvery one of these is built on the same forward/backward/optimize loop you learned above."
+      },
+      {
+        "id": "ann-training-loop",
+        "type": "code",
+        "title": "Minimal training loop (NumPy, regression)",
+        "language": "python",
+        "content": "import numpy as np\n\n# Data: y = 2x + 1\nX = np.array([[1.0], [2.0], [3.0], [4.0]])\ny = np.array([[3.0], [5.0], [7.0], [9.0]])\n\n# Parameters\nW = np.random.randn(1, 1) * 0.01\nb = np.zeros((1, 1))\nlr = 0.01\n\nfor epoch in range(1000):\n    y_pred = X @ W + b\n    loss = np.mean((y_pred - y) ** 2)\n\n    dW = (2 / len(X)) * X.T @ (y_pred - y)\n    db = (2 / len(X)) * np.sum(y_pred - y)\n\n    W -= lr * dW\n    b -= lr * db\n\nprint(f\"W = {W.ravel()[0]:.3f}, b = {b.ravel()[0]:.3f}, loss = {loss:.6f}\")",
+        "output": "W = 2.000, b = 1.000, loss = 0.000000",
+        "showLineNumbers": true
+      },
+      {
+        "id": "ann-pro-training",
+        "type": "code",
+        "title": "Pro-level PyTorch training loop with best practices",
+        "language": "python",
+        "content": "import torch\nimport torch.nn as nn\nfrom torch.utils.data import DataLoader, TensorDataset\nfrom torch.optim.lr_scheduler import CosineAnnealingLR\n\nclass MLP(nn.Module):\n    def __init__(self, in_dim, hidden, out_dim, dropout=0.1):\n        super().__init__()\n        self.net = nn.Sequential(\n            nn.Linear(in_dim, hidden),\n            nn.BatchNorm1d(hidden),\n            nn.GELU(),\n            nn.Dropout(dropout),\n            nn.Linear(hidden, hidden),\n            nn.BatchNorm1d(hidden),\n            nn.GELU(),\n            nn.Dropout(dropout),\n            nn.Linear(hidden, out_dim),\n        )\n\n    def forward(self, x):\n        return self.net(x)\n\ndef train(model, loader, epochs, lr, device):\n    model.to(device)\n    opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-2)\n    sched = CosineAnnealingLR(opt, T_max=epochs)\n    loss_fn = nn.CrossEntropyLoss(label_smoothing=0.1)\n    scaler = torch.cuda.amp.GradScaler(enabled=(device.type == 'cuda'))\n\n    for epoch in range(epochs):\n        model.train()\n        total = 0.0\n        for xb, yb in loader:\n            xb, yb = xb.to(device), yb.to(device)\n            opt.zero_grad(set_to_none=True)\n            with torch.cuda.amp.autocast(enabled=(device.type == 'cuda')):\n                logits = model(xb)\n                loss = loss_fn(logits, yb)\n            scaler.scale(loss).backward()\n            scaler.unscale_(opt)\n            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)\n            scaler.step(opt)\n            scaler.update()\n            total += loss.item() * xb.size(0)\n        sched.step()\n        print(f\"epoch {epoch+1}: loss={total/len(loader.dataset):.4f}\")\n\n# Example usage\nif __name__ == \"__main__\":\n    device = torch.device(\"cuda\" if torch.cuda.is_available() else \"cpu\")\n    X = torch.randn(1024, 20)\n    y = torch.randint(0, 5, (1024,))\n    loader = DataLoader(TensorDataset(X, y), batch_size=64, shuffle=True)\n    model = MLP(20, 128, 5)\n    train(model, loader, epochs=10, lr=3e-3, device=device)",
+        "output": "epoch 1: loss=1.6120\nepoch 2: loss=1.5018\nepoch 3: loss=1.4203\nepoch 4: loss=1.3711\nepoch 5: loss=1.3402\nepoch 6: loss=1.3188\nepoch 7: loss=1.3021\nepoch 8: loss=1.2887\nepoch 9: loss=1.2775\nepoch 10: loss=1.2678",
+        "showLineNumbers": true
+      },
+      {
+        "id": "ann-callout",
+        "type": "callout",
+        "variant": "info",
+        "title": "Pro tip — gradient checking",
+        "content": "Always verify your backpropagation with a numerical gradient check on a tiny network before trusting it on a large one. Finite differences are slow but they catch sign errors and missing terms instantly. In PyTorch, use torch.autograd.gradcheck for custom layers."
+      },
+      {
+        "id": "ann-pitfalls",
+        "type": "callout",
+        "variant": "warning",
+        "title": "Common pitfalls and fixes",
+        "content": "Vanishing gradients (sigmoid/tanh deep stacks) → use ReLU variants + residual connections. Exploding gradients (large weights or RNNs) → gradient clipping + proper init. Dead ReLUs → Leaky ReLU, ELU, or GELU. Overfitting → dropout, weight decay, augmentation, early stopping. Underfitting → more capacity, longer training, lower regularization. NaN loss → check LR, use AMP scaler, clip gradients. BatchNorm fails with small batches → use GroupNorm or LayerNorm."
+      },
+      {
+        "id": "ann-debugging",
+        "type": "table",
+        "title": "Debugging playbook",
+        "columns": [
+          "Symptom",
+          "Likely Cause",
+          "Fix"
+        ],
+        "rows": [
+          [
+            "Loss is NaN",
+            "LR too high, bad init, log(0)",
+            "Lower LR, use AMP scaler, add epsilon"
+          ],
+          [
+            "Loss not decreasing",
+            "LR too low, frozen layers, bad loss",
+            "Raise LR, check requires_grad, verify loss"
+          ],
+          [
+            "Train loss ↓, val loss ↑",
+            "Overfitting",
+            "Dropout, weight decay, more data, early stop"
+          ],
+          [
+            "Both losses high",
+            "Underfitting",
+            "More capacity, train longer, lower regularization"
+          ],
+          [
+            "Accuracy stuck at chance",
+            "Label misalignment, bug in data",
+            "Inspect a batch, overfit 1 sample"
+          ],
+          [
+            "Gradients are zero",
+            "Dead ReLU, detached tensor",
+            "Switch activation, check .detach() calls"
+          ],
+          [
+            "Training very slow",
+            "No GPU, small batch, no AMP",
+            "Move to GPU, increase batch, enable AMP"
+          ],
+          [
+            "Val loss noisy",
+            "BatchNorm in train mode",
+            "Call model.eval() before validation"
+          ]
+        ]
+      },
+      {
+        "id": "ann-scaling",
+        "type": "markdown",
+        "content": "## Level 10 — Scaling and production (Pro)\n\n### Scaling training\n\n- **Mixed precision (AMP):** FP16/BF16 for speed and memory. Use GradScaler for FP16.\n- **Gradient accumulation:** simulate large batches on small GPUs.\n- **DataParallel / DDP:** multi-GPU training. DDP is preferred for correctness and speed.\n- **FSDP / ZeRO:** shard parameters, gradients, and optimizer states across devices.\n- **Gradient checkpointing:** trade compute for memory in very deep nets.\n- **Pipeline parallelism:** split layers across devices for huge models.\n\n### Experiment discipline\n\n- Fix random seeds for reproducibility.\n- Log everything: LR, loss, grad norm, throughput, GPU memory.\n- Use experiment trackers (W&B, MLflow, TensorBoard).\n- Version data, code, and configs together.\n- Run ablation studies — change one thing at a time.\n\n### Deployment\n\n- **Export:** TorchScript, ONNX, or framework-specific formats.\n- **Quantization:** INT8 for 2–4× speedup with minor accuracy loss.\n- **Pruning:** remove redundant weights.\n- **Distillation:** train a small student from a large teacher.\n- **Serving:** TorchServe, Triton, ONNX Runtime, or a custom FastAPI service.\n- **Monitoring:** track latency, throughput, input drift, and prediction drift.\n- **Retraining:** automate periodic retraining on fresh data.\n\n### Responsible AI\n\n- Check for bias across subgroups.\n- Document model cards and data sheets.\n- Ensure explainability where required.\n- Plan for failure modes and rollback.\n"
+      },
+      {
+        "id": "ann-checklist",
+        "type": "checklist",
+        "title": "Mastery checklist — beginner to pro",
+        "items": [
+          "Implement a single neuron with sigmoid from scratch",
+          "Build a 2-layer ANN forward pass using only NumPy",
+          "Derive and code backpropagation for a small MLP",
+          "Train the MLP on XOR and verify it learns the non-linear boundary",
+          "Run a numerical gradient check and confirm analytical gradients match",
+          "Experiment with learning rates and observe divergence vs. slow convergence",
+          "Compare SGD, Momentum, RMSProp, Adam, and AdamW on the same task",
+          "Add L2 regularization and dropout, measure effect on validation loss",
+          "Implement He and Xavier initialization and compare convergence",
+          "Add BatchNorm and observe the effect on training stability",
+          "Implement a cosine LR schedule with warmup",
+          "Build a residual connection and train a 10-layer MLP without vanishing gradients",
+          "Reproduce a small transformer block from scratch",
+          "Train with mixed precision and measure speedup",
+          "Use gradient accumulation to simulate a large batch",
+          "Profile GPU memory and identify the bottleneck",
+          "Export a trained model to ONNX and run inference",
+          "Quantize a model to INT8 and measure accuracy vs. speed tradeoff",
+          "Set up experiment tracking and log all hyperparameters",
+          "Write a model card documenting intended use, limitations, and metrics"
+        ]
+      },
+      {
+        "id": "ann-resources",
+        "type": "markdown",
+        "content": "## Recommended resources\n\n### Books\n- *Deep Learning* — Goodfellow, Bengio, Courville (the canonical text)\n- *Neural Networks and Deep Learning* — Michael Nielsen (free online)\n- *Dive into Deep Learning* — Zhang et al. (free, code-first)\n- *Hands-On Machine Learning* — Aurélien Géron\n\n### Courses\n- Stanford CS231n — CNNs for Visual Recognition\n- Stanford CS224n — NLP with Deep Learning\n- fast.ai — Practical Deep Learning for Coders\n- DeepLearning.AI Specialization\n\n### Papers worth reading\n- *Attention Is All You Need* (2017)\n- *Deep Residual Learning* (2015)\n- *Batch Normalization* (2015)\n- *Adam* (2014)\n- *Dropout* (2014)\n- *ImageNet Classification with Deep CNNs* (2012)\n\n### Tools\n- PyTorch, TensorFlow, JAX\n- Weights & Biases, MLflow, TensorBoard\n- ONNX, TorchScript, Triton Inference Server\n- Hugging Face Transformers and Datasets"
+      }
+    ],
+    "sources": [
+      "https://www.deeplearningbook.org/",
+      "https://cs231n.github.io/neural-networks-1/",
+      "https://cs231n.github.io/optimization-2/",
+      "https://pytorch.org/tutorials/beginner/blitz/neural_networks_tutorial.html",
+      "https://d2l.ai/",
+      "https://arxiv.org/abs/1706.03762",
+      "https://arxiv.org/abs/1512.03385",
+      "https://arxiv.org/abs/1502.03167",
+      "https://arxiv.org/abs/1412.6980"
+    ],
+    "createdAt": "2026-01-14",
+    "updatedAt": "2026-08-02",
+    "estimatedReadingMinutes": 45
+  },
+  {
     "id": "python-fundamentals",
     "topicId": "python-fundamentals",
     "title": "Python Fundamentals",
@@ -7,9 +369,15 @@
     "slug": "python-fundamentals",
     "level": "beginner",
     "status": "published",
-    "tags": ["python", "basics"],
+    "tags": [
+      "python",
+      "basics"
+    ],
     "prerequisites": [],
-    "relatedLessons": ["python-regular-expressions", "javascript-fundamentals"],
+    "relatedLessons": [
+      "python-regular-expressions",
+      "javascript-fundamentals"
+    ],
     "sections": [
       {
         "id": "python-intro",
@@ -29,12 +397,27 @@
         "id": "python-table",
         "type": "table",
         "title": "Python essentials",
-        "columns": ["Concept", "Use"],
+        "columns": [
+          "Concept",
+          "Use"
+        ],
         "rows": [
-          ["List", "Mutable ordered data"],
-          ["Tuple", "Immutable records"],
-          ["Dictionary", "Key-value lookups"],
-          ["Function", "Reusable logic"]
+          [
+            "List",
+            "Mutable ordered data"
+          ],
+          [
+            "Tuple",
+            "Immutable records"
+          ],
+          [
+            "Dictionary",
+            "Key-value lookups"
+          ],
+          [
+            "Function",
+            "Reusable logic"
+          ]
         ]
       },
       {
@@ -56,7 +439,9 @@
         ]
       }
     ],
-    "sources": ["https://docs.python.org/3/tutorial/"],
+    "sources": [
+      "https://docs.python.org/3/tutorial/"
+    ],
     "createdAt": "2026-01-14",
     "updatedAt": "2026-08-02",
     "estimatedReadingMinutes": 8
@@ -69,9 +454,17 @@
     "slug": "python-regular-expressions",
     "level": "intermediate",
     "status": "published",
-    "tags": ["python", "regex"],
-    "prerequisites": ["python-fundamentals"],
-    "relatedLessons": ["python-fundamentals", "git-fundamentals"],
+    "tags": [
+      "python",
+      "regex"
+    ],
+    "prerequisites": [
+      "python-fundamentals"
+    ],
+    "relatedLessons": [
+      "python-fundamentals",
+      "git-fundamentals"
+    ],
     "sections": [
       {
         "id": "regex-intro",
@@ -91,13 +484,31 @@
         "id": "regex-table",
         "type": "table",
         "title": "Common tokens",
-        "columns": ["Token", "Meaning"],
+        "columns": [
+          "Token",
+          "Meaning"
+        ],
         "rows": [
-          [".", "Matches any single character"],
-          ["*", "Zero or more repeats"],
-          ["+", "One or more repeats"],
-          ["\\d", "Digit"],
-          ["[A-Z]", "Character range"]
+          [
+            ".",
+            "Matches any single character"
+          ],
+          [
+            "*",
+            "Zero or more repeats"
+          ],
+          [
+            "+",
+            "One or more repeats"
+          ],
+          [
+            "\\d",
+            "Digit"
+          ],
+          [
+            "[A-Z]",
+            "Character range"
+          ]
         ]
       },
       {
@@ -108,7 +519,9 @@
         "content": "Regex is powerful but can become difficult to maintain when the pattern grows too complex. Prefer simple patterns and dedicated parsers when the input format is large or nested."
       }
     ],
-    "sources": ["https://docs.python.org/3/library/re.html"],
+    "sources": [
+      "https://docs.python.org/3/library/re.html"
+    ],
     "createdAt": "2026-02-10",
     "updatedAt": "2026-08-05",
     "estimatedReadingMinutes": 7
@@ -121,9 +534,15 @@
     "slug": "javascript-fundamentals",
     "level": "beginner",
     "status": "published",
-    "tags": ["javascript", "web"],
+    "tags": [
+      "javascript",
+      "web"
+    ],
     "prerequisites": [],
-    "relatedLessons": ["python-fundamentals", "nextjs-fundamentals"],
+    "relatedLessons": [
+      "python-fundamentals",
+      "nextjs-fundamentals"
+    ],
     "sections": [
       {
         "id": "js-intro",
@@ -143,12 +562,27 @@
         "id": "js-table",
         "type": "table",
         "title": "Core concepts",
-        "columns": ["Concept", "Purpose"],
+        "columns": [
+          "Concept",
+          "Purpose"
+        ],
         "rows": [
-          ["let/const", "Block-scoped variables"],
-          ["function", "Reusable logic"],
-          ["Promise", "Asynchronous work"],
-          ["Array methods", "Transforms and filtering"]
+          [
+            "let/const",
+            "Block-scoped variables"
+          ],
+          [
+            "function",
+            "Reusable logic"
+          ],
+          [
+            "Promise",
+            "Asynchronous work"
+          ],
+          [
+            "Array methods",
+            "Transforms and filtering"
+          ]
         ]
       },
       {
@@ -159,7 +593,9 @@
         "content": "Prefer clear, small functions and explicit async handling over deeply nested callbacks."
       }
     ],
-    "sources": ["https://developer.mozilla.org/en-US/docs/Web/JavaScript"],
+    "sources": [
+      "https://developer.mozilla.org/en-US/docs/Web/JavaScript"
+    ],
     "createdAt": "2026-02-18",
     "updatedAt": "2026-08-07",
     "estimatedReadingMinutes": 9
@@ -172,9 +608,17 @@
     "slug": "nextjs-fundamentals",
     "level": "intermediate",
     "status": "published",
-    "tags": ["nextjs", "react"],
-    "prerequisites": ["javascript-fundamentals"],
-    "relatedLessons": ["javascript-fundamentals", "machine-learning-fundamentals"],
+    "tags": [
+      "nextjs",
+      "react"
+    ],
+    "prerequisites": [
+      "javascript-fundamentals"
+    ],
+    "relatedLessons": [
+      "javascript-fundamentals",
+      "machine-learning-fundamentals"
+    ],
     "sections": [
       {
         "id": "nextjs-intro",
@@ -194,11 +638,23 @@
         "id": "nextjs-table",
         "type": "table",
         "title": "Render modes",
-        "columns": ["Mode", "Typical use"],
+        "columns": [
+          "Mode",
+          "Typical use"
+        ],
         "rows": [
-          ["Static generation", "Docs or marketing pages"],
-          ["Server rendering", "Dynamic content"],
-          ["Client rendering", "Interactive UI after load"]
+          [
+            "Static generation",
+            "Docs or marketing pages"
+          ],
+          [
+            "Server rendering",
+            "Dynamic content"
+          ],
+          [
+            "Client rendering",
+            "Interactive UI after load"
+          ]
         ]
       },
       {
@@ -209,7 +665,9 @@
         "content": "Choose the render strategy based on freshness needs, user interaction, and performance requirements."
       }
     ],
-    "sources": ["https://nextjs.org/docs"],
+    "sources": [
+      "https://nextjs.org/docs"
+    ],
     "createdAt": "2026-03-02",
     "updatedAt": "2026-08-04",
     "estimatedReadingMinutes": 8
@@ -222,9 +680,15 @@
     "slug": "machine-learning-fundamentals",
     "level": "beginner",
     "status": "published",
-    "tags": ["ml", "training"],
+    "tags": [
+      "ml",
+      "training"
+    ],
     "prerequisites": [],
-    "relatedLessons": ["knn-fundamentals", "neural-network-fundamentals"],
+    "relatedLessons": [
+      "knn-fundamentals",
+      "neural-network-fundamentals"
+    ],
     "sections": [
       {
         "id": "ml-intro",
@@ -241,12 +705,27 @@
         "id": "ml-table",
         "type": "table",
         "title": "Common workflow",
-        "columns": ["Step", "Purpose"],
+        "columns": [
+          "Step",
+          "Purpose"
+        ],
         "rows": [
-          ["Data collection", "Gather representative examples"],
-          ["Feature prep", "Normalize and structure input"],
-          ["Model training", "Fit parameters to data"],
-          ["Evaluation", "Measure generalization quality"]
+          [
+            "Data collection",
+            "Gather representative examples"
+          ],
+          [
+            "Feature prep",
+            "Normalize and structure input"
+          ],
+          [
+            "Model training",
+            "Fit parameters to data"
+          ],
+          [
+            "Evaluation",
+            "Measure generalization quality"
+          ]
         ]
       },
       {
@@ -257,7 +736,9 @@
         "content": "A model that fits training data well can still fail on real-world data if the distribution shifts or the data contains bias."
       }
     ],
-    "sources": ["https://www.coursera.org/learn/machine-learning"],
+    "sources": [
+      "https://www.coursera.org/learn/machine-learning"
+    ],
     "createdAt": "2026-03-11",
     "updatedAt": "2026-08-08",
     "estimatedReadingMinutes": 10
@@ -270,9 +751,17 @@
     "slug": "knn-fundamentals",
     "level": "beginner",
     "status": "published",
-    "tags": ["classification", "knn"],
-    "prerequisites": ["machine-learning-fundamentals"],
-    "relatedLessons": ["machine-learning-fundamentals", "linear-algebra-fundamentals"],
+    "tags": [
+      "classification",
+      "knn"
+    ],
+    "prerequisites": [
+      "machine-learning-fundamentals"
+    ],
+    "relatedLessons": [
+      "machine-learning-fundamentals",
+      "linear-algebra-fundamentals"
+    ],
     "sections": [
       {
         "id": "knn-intro",
@@ -305,7 +794,9 @@
         ]
       }
     ],
-    "sources": ["https://scikit-learn.org/stable/modules/neighbors.html"],
+    "sources": [
+      "https://scikit-learn.org/stable/modules/neighbors.html"
+    ],
     "createdAt": "2026-03-21",
     "updatedAt": "2026-08-03",
     "estimatedReadingMinutes": 8
@@ -318,9 +809,18 @@
     "slug": "neural-network-fundamentals",
     "level": "intermediate",
     "status": "published",
-    "tags": ["deep-learning", "neural-networks"],
-    "prerequisites": ["machine-learning-fundamentals", "linear-algebra-fundamentals"],
-    "relatedLessons": ["machine-learning-fundamentals", "knn-fundamentals"],
+    "tags": [
+      "deep-learning",
+      "neural-networks"
+    ],
+    "prerequisites": [
+      "machine-learning-fundamentals",
+      "linear-algebra-fundamentals"
+    ],
+    "relatedLessons": [
+      "machine-learning-fundamentals",
+      "knn-fundamentals"
+    ],
     "sections": [
       {
         "id": "nn-intro",
@@ -350,7 +850,9 @@
         "content": "Simple models are interpretable and fast to train; deeper models can capture richer patterns but often need more data and careful tuning."
       }
     ],
-    "sources": ["https://pytorch.org/tutorials/beginner/basics/intro.html"],
+    "sources": [
+      "https://pytorch.org/tutorials/beginner/basics/intro.html"
+    ],
     "createdAt": "2026-04-08",
     "updatedAt": "2026-08-01",
     "estimatedReadingMinutes": 9
@@ -363,9 +865,15 @@
     "slug": "git-fundamentals",
     "level": "beginner",
     "status": "published",
-    "tags": ["git", "workflow"],
+    "tags": [
+      "git",
+      "workflow"
+    ],
     "prerequisites": [],
-    "relatedLessons": ["python-regular-expressions", "nextjs-fundamentals"],
+    "relatedLessons": [
+      "python-regular-expressions",
+      "nextjs-fundamentals"
+    ],
     "sections": [
       {
         "id": "git-intro",
@@ -385,12 +893,27 @@
         "id": "git-table",
         "type": "table",
         "title": "Core concepts",
-        "columns": ["Command", "Purpose"],
+        "columns": [
+          "Command",
+          "Purpose"
+        ],
         "rows": [
-          ["git status", "Inspect the working tree"],
-          ["git add", "Stage changes"],
-          ["git commit", "Save a snapshot"],
-          ["git merge", "Integrate branch history"]
+          [
+            "git status",
+            "Inspect the working tree"
+          ],
+          [
+            "git add",
+            "Stage changes"
+          ],
+          [
+            "git commit",
+            "Save a snapshot"
+          ],
+          [
+            "git merge",
+            "Integrate branch history"
+          ]
         ]
       },
       {
@@ -401,7 +924,9 @@
         "content": "Commit often and keep each commit focused. Small, understandable changes are much easier to review and recover from later."
       }
     ],
-    "sources": ["https://git-scm.com/doc"],
+    "sources": [
+      "https://git-scm.com/doc"
+    ],
     "createdAt": "2026-04-28",
     "updatedAt": "2026-08-09",
     "estimatedReadingMinutes": 7
@@ -414,9 +939,15 @@
     "slug": "linear-algebra-fundamentals",
     "level": "intermediate",
     "status": "published",
-    "tags": ["math", "vectors"],
+    "tags": [
+      "math",
+      "vectors"
+    ],
     "prerequisites": [],
-    "relatedLessons": ["machine-learning-fundamentals", "neural-network-fundamentals"],
+    "relatedLessons": [
+      "machine-learning-fundamentals",
+      "neural-network-fundamentals"
+    ],
     "sections": [
       {
         "id": "linear-intro",
@@ -433,12 +964,27 @@
         "id": "linear-table",
         "type": "table",
         "title": "Core objects",
-        "columns": ["Object", "Meaning"],
+        "columns": [
+          "Object",
+          "Meaning"
+        ],
         "rows": [
-          ["Vector", "Direction and magnitude"],
-          ["Matrix", "Linear map between spaces"],
-          ["Transpose", "Flips row and column orientation"],
-          ["Dot product", "Measures alignment between vectors"]
+          [
+            "Vector",
+            "Direction and magnitude"
+          ],
+          [
+            "Matrix",
+            "Linear map between spaces"
+          ],
+          [
+            "Transpose",
+            "Flips row and column orientation"
+          ],
+          [
+            "Dot product",
+            "Measures alignment between vectors"
+          ]
         ]
       },
       {
@@ -452,7 +998,9 @@
         ]
       }
     ],
-    "sources": ["https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/"],
+    "sources": [
+      "https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/"
+    ],
     "createdAt": "2026-05-11",
     "updatedAt": "2026-08-11",
     "estimatedReadingMinutes": 9

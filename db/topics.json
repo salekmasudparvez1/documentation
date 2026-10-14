@@ -1,5 +1,19 @@
 [
   {
+    "id": "ann-fundamental",
+    "categoryId": "deep-learning",
+    "title": "Artificial Neural Networks Fundamentals",
+    "description": "Learn the basics of artificial neural networks, including their architecture, activation functions, and training algorithms.",
+    "slug": "ann-fundamental",
+    "order": 0,
+    "status": "published",
+    "tags": [
+      "deep-learning",
+      "neural-networks"
+    ],
+    "icon": "brain"
+  },
+  {
     "id": "python-fundamentals",
     "categoryId": "programming",
     "title": "Python Fundamentals",
@@ -7,7 +21,10 @@
     "slug": "python-fundamentals",
     "order": 1,
     "status": "published",
-    "tags": ["python", "basics"],
+    "tags": [
+      "python",
+      "basics"
+    ],
     "icon": "code"
   },
   {
@@ -18,7 +35,10 @@
     "slug": "python-regular-expressions",
     "order": 2,
     "status": "published",
-    "tags": ["python", "regex"],
+    "tags": [
+      "python",
+      "regex"
+    ],
     "icon": "search"
   },
   {
@@ -29,7 +49,10 @@
     "slug": "javascript-fundamentals",
     "order": 1,
     "status": "published",
-    "tags": ["javascript", "web"],
+    "tags": [
+      "javascript",
+      "web"
+    ],
     "icon": "file-code"
   },
   {
@@ -40,7 +63,10 @@
     "slug": "nextjs-fundamentals",
     "order": 2,
     "status": "published",
-    "tags": ["nextjs", "react"],
+    "tags": [
+      "nextjs",
+      "react"
+    ],
     "icon": "layout-template"
   },
   {
@@ -51,7 +77,10 @@
     "slug": "machine-learning-fundamentals",
     "order": 1,
     "status": "published",
-    "tags": ["ml", "training"],
+    "tags": [
+      "ml",
+      "training"
+    ],
     "icon": "brain-circuit"
   },
   {
@@ -62,7 +91,10 @@
     "slug": "knn-fundamentals",
     "order": 2,
     "status": "published",
-    "tags": ["classification", "knn"],
+    "tags": [
+      "classification",
+      "knn"
+    ],
     "icon": "radar"
   },
   {
@@ -73,7 +105,10 @@
     "slug": "neural-network-fundamentals",
     "order": 3,
     "status": "published",
-    "tags": ["deep-learning", "nn"],
+    "tags": [
+      "deep-learning",
+      "nn"
+    ],
     "icon": "network"
   },
   {
@@ -84,7 +119,10 @@
     "slug": "git-fundamentals",
     "order": 1,
     "status": "published",
-    "tags": ["git", "workflow"],
+    "tags": [
+      "git",
+      "workflow"
+    ],
     "icon": "git-branch"
   },
   {
@@ -95,7 +133,10 @@
     "slug": "linear-algebra-fundamentals",
     "order": 2,
     "status": "published",
-    "tags": ["math", "vectors"],
+    "tags": [
+      "math",
+      "vectors"
+    ],
     "icon": "calculator"
   }
 ]
