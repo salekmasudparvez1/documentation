@@ -27,6 +27,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: Inter, "Segoe UI", sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -67,10 +68,84 @@ a {
 
 pre {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.sidebar-scroll {
+  max-height: min(58svh, 34rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 116, 139, 0.45) transparent;
+}
+
+.sidebar-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(100, 116, 139, 0.45);
+}
+
+.mobile-sidebar-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+}
+
+.mobile-sidebar-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.42);
+  backdrop-filter: blur(3px);
+}
+
+.mobile-sidebar-drawer {
+  position: absolute;
+  inset: 0.75rem 0.75rem auto;
+  max-height: calc(100svh - 1.5rem);
+  overflow-y: auto;
+  border-radius: 1.75rem;
+  padding: 0.75rem;
+  background: var(--bg);
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.28);
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  animation: sidebar-slide-in 180ms ease-out;
+}
+
+.mobile-sidebar-drawer aside {
+  max-width: none;
+}
+
+.mobile-sidebar-drawer .sidebar-scroll {
+  max-height: calc(100svh - 6.5rem);
+}
+
+.sidebar-open {
+  overflow: hidden;
+}
+
+@keyframes sidebar-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .mobile-sidebar-drawer {
+    animation: none;
   }
 }

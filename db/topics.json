@@ -1,0 +1,101 @@
+[
+  {
+    "id": "python-fundamentals",
+    "categoryId": "programming",
+    "title": "Python Fundamentals",
+    "description": "Learn Python syntax, control flow, and data structures for practical scripting and problem solving.",
+    "slug": "python-fundamentals",
+    "order": 1,
+    "status": "published",
+    "tags": ["python", "basics"],
+    "icon": "code"
+  },
+  {
+    "id": "python-regular-expressions",
+    "categoryId": "programming",
+    "title": "Python Regular Expressions",
+    "description": "Pattern matching, validation, and text-processing workflows in Python.",
+    "slug": "python-regular-expressions",
+    "order": 2,
+    "status": "published",
+    "tags": ["python", "regex"],
+    "icon": "search"
+  },
+  {
+    "id": "javascript-fundamentals",
+    "categoryId": "web-development",
+    "title": "JavaScript Fundamentals",
+    "description": "Core syntax, closures, async flows, and browser-focused JavaScript patterns.",
+    "slug": "javascript-fundamentals",
+    "order": 1,
+    "status": "published",
+    "tags": ["javascript", "web"],
+    "icon": "file-code"
+  },
+  {
+    "id": "nextjs-fundamentals",
+    "categoryId": "web-development",
+    "title": "Next.js Fundamentals",
+    "description": "Routing, rendering modes, and toolchain choices for shipping modern web apps.",
+    "slug": "nextjs-fundamentals",
+    "order": 2,
+    "status": "published",
+    "tags": ["nextjs", "react"],
+    "icon": "layout-template"
+  },
+  {
+    "id": "machine-learning-fundamentals",
+    "categoryId": "ai-ml",
+    "title": "Machine Learning Fundamentals",
+    "description": "The workflow behind training and evaluating predictive models.",
+    "slug": "machine-learning-fundamentals",
+    "order": 1,
+    "status": "published",
+    "tags": ["ml", "training"],
+    "icon": "brain-circuit"
+  },
+  {
+    "id": "knn-fundamentals",
+    "categoryId": "ai-ml",
+    "title": "K-Nearest Neighbors",
+    "description": "A simple distance-based model for understanding classification intuition.",
+    "slug": "knn-fundamentals",
+    "order": 2,
+    "status": "published",
+    "tags": ["classification", "knn"],
+    "icon": "radar"
+  },
+  {
+    "id": "neural-network-fundamentals",
+    "categoryId": "ai-ml",
+    "title": "Neural Network Fundamentals",
+    "description": "Parameterized function approximation and backpropagation basics.",
+    "slug": "neural-network-fundamentals",
+    "order": 3,
+    "status": "published",
+    "tags": ["deep-learning", "nn"],
+    "icon": "network"
+  },
+  {
+    "id": "git-fundamentals",
+    "categoryId": "tools",
+    "title": "Git Fundamentals",
+    "description": "Version history, branching, and collaborative workflows for a reliable development process.",
+    "slug": "git-fundamentals",
+    "order": 1,
+    "status": "published",
+    "tags": ["git", "workflow"],
+    "icon": "git-branch"
+  },
+  {
+    "id": "linear-algebra-fundamentals",
+    "categoryId": "tools",
+    "title": "Linear Algebra Fundamentals",
+    "description": "Vectors, matrices, and transformations that shape modern ML and optimization.",
+    "slug": "linear-algebra-fundamentals",
+    "order": 2,
+    "status": "published",
+    "tags": ["math", "vectors"],
+    "icon": "calculator"
+  }
+]

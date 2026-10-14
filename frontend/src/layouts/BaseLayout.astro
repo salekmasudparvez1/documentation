@@ -22,8 +22,29 @@ const { title = site.title, description = site.description } = Astro.props;
   </head>
   <body class="min-h-screen bg-[var(--bg)] text-[var(--text)] antialiased">
     <Header />
-    <div class="mx-auto block max-w-7xl px-4 py-6 sm:px-6 lg:hidden lg:px-8">
-      <Sidebar />
+    <div class="mobile-sidebar-shell mx-auto block max-w-7xl px-4 pt-4 sm:px-6 lg:hidden lg:px-8">
+      <button
+        type="button"
+        class="mobile-sidebar-toggle inline-flex w-full items-center justify-between rounded-2xl border border-slate-200 bg-white px-4 py-3 text-left text-sm font-semibold text-slate-800 shadow-sm transition hover:border-sky-400 hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500/50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-sky-500 dark:hover:text-sky-300"
+        aria-expanded="false"
+        aria-controls="mobile-sidebar-panel"
+      >
+        <span class="flex items-center gap-3">
+          <span class="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-300" aria-hidden="true">☰</span>
+          <span>Browse topics</span>
+        </span>
+        <span class="mobile-sidebar-chevron text-lg transition-transform" aria-hidden="true">⌄</span>
+      </button>
+      <div id="mobile-sidebar-panel" class="mobile-sidebar-panel" hidden>
+        <div class="mobile-sidebar-backdrop" data-sidebar-close></div>
+        <div class="mobile-sidebar-drawer">
+          <div class="mb-3 flex items-center justify-between px-1">
+            <span class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Documentation</span>
+            <button type="button" class="rounded-full p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-white" data-sidebar-close aria-label="Close topics menu">✕</button>
+          </div>
+          <Sidebar />
+        </div>
+      </div>
     </div>
     <div class="mx-auto flex max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:px-8">
       <div class="hidden w-72 lg:block">
@@ -38,6 +59,32 @@ const { title = site.title, description = site.description } = Astro.props;
     </footer>
 
     <script is:inline>
+      const mobileSidebarToggle = document.querySelector('.mobile-sidebar-toggle');
+      const mobileSidebarPanel = document.querySelector('#mobile-sidebar-panel');
+      const mobileSidebarChevron = document.querySelector('.mobile-sidebar-chevron');
+
+      const setMobileSidebar = (open) => {
+        if (!mobileSidebarToggle || !mobileSidebarPanel) return;
+        mobileSidebarToggle.setAttribute('aria-expanded', String(open));
+        mobileSidebarPanel.hidden = !open;
+        mobileSidebarChevron?.classList.toggle('rotate-180', open);
+        document.body.classList.toggle('sidebar-open', open);
+      };
+
+      mobileSidebarToggle?.addEventListener('click', () => {
+        setMobileSidebar(mobileSidebarToggle.getAttribute('aria-expanded') !== 'true');
+      });
+      mobileSidebarPanel?.addEventListener('click', (event) => {
+        if (event.target.closest('[data-sidebar-close]')) setMobileSidebar(false);
+        if (event.target.closest('a')) setMobileSidebar(false);
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') setMobileSidebar(false);
+      });
+      window.addEventListener('resize', () => {
+        if (window.matchMedia('(min-width: 1024px)').matches) setMobileSidebar(false);
+      });
+
       document.addEventListener('click', async (event) => {
         const trigger = event.target.closest('[data-copy-target]');
         if (!trigger) return;

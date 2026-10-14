@@ -1,0 +1,460 @@
+[
+  {
+    "id": "python-fundamentals",
+    "topicId": "python-fundamentals",
+    "title": "Python Fundamentals",
+    "description": "Learn Python syntax, primitives, control flow, and basic data structures used in day-to-day automation and analysis.",
+    "slug": "python-fundamentals",
+    "level": "beginner",
+    "status": "published",
+    "tags": ["python", "basics"],
+    "prerequisites": [],
+    "relatedLessons": ["python-regular-expressions", "javascript-fundamentals"],
+    "sections": [
+      {
+        "id": "python-intro",
+        "type": "markdown",
+        "content": "## Why Python matters\n\nPython emphasizes readable syntax and a deep standard library. That makes it an excellent first language for scripting, data analysis, automation, and experimentation with models.\n\nThe key is to learn the rule set once and then reuse it across many domains."
+      },
+      {
+        "id": "python-example",
+        "type": "code",
+        "title": "Example",
+        "language": "python",
+        "content": "numbers = [1, 2, 3, 4]\nprint(sum(numbers))\nfor value in numbers:\n    if value % 2 == 0:\n        print(f\"even: {value}\")",
+        "output": "10\neven: 2\neven: 4",
+        "showLineNumbers": true
+      },
+      {
+        "id": "python-table",
+        "type": "table",
+        "title": "Python essentials",
+        "columns": ["Concept", "Use"],
+        "rows": [
+          ["List", "Mutable ordered data"],
+          ["Tuple", "Immutable records"],
+          ["Dictionary", "Key-value lookups"],
+          ["Function", "Reusable logic"]
+        ]
+      },
+      {
+        "id": "python-callout",
+        "type": "callout",
+        "variant": "info",
+        "title": "Tip",
+        "content": "Write small, testable functions before you try to abstract large behavior. Small functions are easier to reason about and debug."
+      },
+      {
+        "id": "python-checklist",
+        "type": "checklist",
+        "title": "Practice checklist",
+        "items": [
+          "Write a function that accepts and returns data",
+          "Use a dictionary for keyed lookups",
+          "Practice list comprehension",
+          "Read the Python docs for standard-library modules"
+        ]
+      }
+    ],
+    "sources": ["https://docs.python.org/3/tutorial/"],
+    "createdAt": "2026-01-14",
+    "updatedAt": "2026-08-02",
+    "estimatedReadingMinutes": 8
+  },
+  {
+    "id": "python-regular-expressions",
+    "topicId": "python-regular-expressions",
+    "title": "Python Regular Expressions",
+    "description": "Use regex to validate, search, and transform text reliably in Python.",
+    "slug": "python-regular-expressions",
+    "level": "intermediate",
+    "status": "published",
+    "tags": ["python", "regex"],
+    "prerequisites": ["python-fundamentals"],
+    "relatedLessons": ["python-fundamentals", "git-fundamentals"],
+    "sections": [
+      {
+        "id": "regex-intro",
+        "type": "markdown",
+        "content": "## Pattern matching\n\nRegular expressions are a compact way to describe patterns in text. Use them for validation, filtering, extraction, and cleanup tasks.\n\nThe challenge is not memorizing every token but learning the common building blocks: character classes, groups, quantifiers, and anchors."
+      },
+      {
+        "id": "regex-example",
+        "type": "code",
+        "title": "Matching email addresses",
+        "language": "python",
+        "content": "import re\n\npattern = r\"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\"\ntext = \"hello@example.com and test@site.io\"\nprint(re.findall(pattern, text))",
+        "output": "['hello@example.com', 'test@site.io']",
+        "showLineNumbers": true
+      },
+      {
+        "id": "regex-table",
+        "type": "table",
+        "title": "Common tokens",
+        "columns": ["Token", "Meaning"],
+        "rows": [
+          [".", "Matches any single character"],
+          ["*", "Zero or more repeats"],
+          ["+", "One or more repeats"],
+          ["\\d", "Digit"],
+          ["[A-Z]", "Character range"]
+        ]
+      },
+      {
+        "id": "regex-callout",
+        "type": "callout",
+        "variant": "warning",
+        "title": "Caution",
+        "content": "Regex is powerful but can become difficult to maintain when the pattern grows too complex. Prefer simple patterns and dedicated parsers when the input format is large or nested."
+      }
+    ],
+    "sources": ["https://docs.python.org/3/library/re.html"],
+    "createdAt": "2026-02-10",
+    "updatedAt": "2026-08-05",
+    "estimatedReadingMinutes": 7
+  },
+  {
+    "id": "javascript-fundamentals",
+    "topicId": "javascript-fundamentals",
+    "title": "JavaScript Fundamentals",
+    "description": "Understand variables, functions, iteration, and asynchronous patterns in modern JavaScript.",
+    "slug": "javascript-fundamentals",
+    "level": "beginner",
+    "status": "published",
+    "tags": ["javascript", "web"],
+    "prerequisites": [],
+    "relatedLessons": ["python-fundamentals", "nextjs-fundamentals"],
+    "sections": [
+      {
+        "id": "js-intro",
+        "type": "markdown",
+        "content": "## JavaScript basics\n\nJavaScript is the language of interactive web experiences. It blends expression-based syntax with event-driven execution, which makes it flexible for browser logic, API calls, and tooling."
+      },
+      {
+        "id": "js-example",
+        "type": "code",
+        "title": "Async example",
+        "language": "javascript",
+        "content": "const fetchUser = async () => {\n  const user = { name: 'Ari' };\n  return user;\n};\n\nfetchUser().then((user) => console.log(user.name));",
+        "output": "Ari",
+        "showLineNumbers": true
+      },
+      {
+        "id": "js-table",
+        "type": "table",
+        "title": "Core concepts",
+        "columns": ["Concept", "Purpose"],
+        "rows": [
+          ["let/const", "Block-scoped variables"],
+          ["function", "Reusable logic"],
+          ["Promise", "Asynchronous work"],
+          ["Array methods", "Transforms and filtering"]
+        ]
+      },
+      {
+        "id": "js-callout",
+        "type": "callout",
+        "variant": "info",
+        "title": "Developer note",
+        "content": "Prefer clear, small functions and explicit async handling over deeply nested callbacks."
+      }
+    ],
+    "sources": ["https://developer.mozilla.org/en-US/docs/Web/JavaScript"],
+    "createdAt": "2026-02-18",
+    "updatedAt": "2026-08-07",
+    "estimatedReadingMinutes": 9
+  },
+  {
+    "id": "nextjs-fundamentals",
+    "topicId": "nextjs-fundamentals",
+    "title": "Next.js Fundamentals",
+    "description": "Explore route structure, rendering strategies, and data flow in a Next.js application.",
+    "slug": "nextjs-fundamentals",
+    "level": "intermediate",
+    "status": "published",
+    "tags": ["nextjs", "react"],
+    "prerequisites": ["javascript-fundamentals"],
+    "relatedLessons": ["javascript-fundamentals", "machine-learning-fundamentals"],
+    "sections": [
+      {
+        "id": "nextjs-intro",
+        "type": "markdown",
+        "content": "## Routing and rendering\n\nNext.js makes page routing and rendering choices explicit. You get file-based routing, server and client components, and a flexible deployment story for static, hybrid, or server-rendered applications."
+      },
+      {
+        "id": "nextjs-example",
+        "type": "code",
+        "title": "A simple page",
+        "language": "javascript",
+        "content": "export default function Page() {\n  return <main><h1>Hello from Next.js</h1></main>;\n}",
+        "output": "Renders a page with the provided heading",
+        "showLineNumbers": true
+      },
+      {
+        "id": "nextjs-table",
+        "type": "table",
+        "title": "Render modes",
+        "columns": ["Mode", "Typical use"],
+        "rows": [
+          ["Static generation", "Docs or marketing pages"],
+          ["Server rendering", "Dynamic content"],
+          ["Client rendering", "Interactive UI after load"]
+        ]
+      },
+      {
+        "id": "nextjs-callout",
+        "type": "callout",
+        "variant": "success",
+        "title": "Design note",
+        "content": "Choose the render strategy based on freshness needs, user interaction, and performance requirements."
+      }
+    ],
+    "sources": ["https://nextjs.org/docs"],
+    "createdAt": "2026-03-02",
+    "updatedAt": "2026-08-04",
+    "estimatedReadingMinutes": 8
+  },
+  {
+    "id": "machine-learning-fundamentals",
+    "topicId": "machine-learning-fundamentals",
+    "title": "Machine Learning Fundamentals",
+    "description": "Understand how models learn from data, how errors are measured, and how assumptions shape outcomes.",
+    "slug": "machine-learning-fundamentals",
+    "level": "beginner",
+    "status": "published",
+    "tags": ["ml", "training"],
+    "prerequisites": [],
+    "relatedLessons": ["knn-fundamentals", "neural-network-fundamentals"],
+    "sections": [
+      {
+        "id": "ml-intro",
+        "type": "markdown",
+        "content": "## ML as prediction\n\nMachine learning is the practice of teaching algorithms to detect patterns in data and generalize to new examples. The core workflow includes gathering data, choosing a model, training it, and evaluating how well it performs on unseen samples."
+      },
+      {
+        "id": "ml-formula",
+        "type": "formula",
+        "latex": "Error = \\frac{1}{n} \\sum_{i=1}^{n}(y_i - \\hat{y}_i)^2",
+        "caption": "Mean squared error highlights the gap between prediction and target."
+      },
+      {
+        "id": "ml-table",
+        "type": "table",
+        "title": "Common workflow",
+        "columns": ["Step", "Purpose"],
+        "rows": [
+          ["Data collection", "Gather representative examples"],
+          ["Feature prep", "Normalize and structure input"],
+          ["Model training", "Fit parameters to data"],
+          ["Evaluation", "Measure generalization quality"]
+        ]
+      },
+      {
+        "id": "ml-callout",
+        "type": "callout",
+        "variant": "warning",
+        "title": "Important",
+        "content": "A model that fits training data well can still fail on real-world data if the distribution shifts or the data contains bias."
+      }
+    ],
+    "sources": ["https://www.coursera.org/learn/machine-learning"],
+    "createdAt": "2026-03-11",
+    "updatedAt": "2026-08-08",
+    "estimatedReadingMinutes": 10
+  },
+  {
+    "id": "knn-fundamentals",
+    "topicId": "knn-fundamentals",
+    "title": "K-Nearest Neighbors",
+    "description": "A simple but powerful classifier built from proximity in feature space.",
+    "slug": "knn-fundamentals",
+    "level": "beginner",
+    "status": "published",
+    "tags": ["classification", "knn"],
+    "prerequisites": ["machine-learning-fundamentals"],
+    "relatedLessons": ["machine-learning-fundamentals", "linear-algebra-fundamentals"],
+    "sections": [
+      {
+        "id": "knn-intro",
+        "type": "markdown",
+        "content": "## Intuition behind KNN\n\nK-nearest neighbors classifies a new point by looking at the closest labeled examples. It is easy to explain and useful for understanding how distance-based learning works before moving to more elaborate models."
+      },
+      {
+        "id": "knn-formula",
+        "type": "formula",
+        "latex": "d(x, x_i) = \\sqrt{\\sum_{j=1}^{m}(x_j - x_{ij})^2}",
+        "caption": "Euclidean distance is the common similarity measure used to find neighbors."
+      },
+      {
+        "id": "knn-code",
+        "type": "code",
+        "title": "Conceptual sketch",
+        "language": "python",
+        "content": "from sklearn.neighbors import KNeighborsClassifier\n\nmodel = KNeighborsClassifier(n_neighbors=3)\nmodel.fit(X_train, y_train)\npreds = model.predict(X_test)",
+        "output": "Predicted labels for the test set",
+        "showLineNumbers": true
+      },
+      {
+        "id": "knn-checklist",
+        "type": "checklist",
+        "title": "Things to watch",
+        "items": [
+          "Normalize features when scales differ",
+          "Choose k carefully",
+          "Measure performance on held-out validation data"
+        ]
+      }
+    ],
+    "sources": ["https://scikit-learn.org/stable/modules/neighbors.html"],
+    "createdAt": "2026-03-21",
+    "updatedAt": "2026-08-03",
+    "estimatedReadingMinutes": 8
+  },
+  {
+    "id": "neural-network-fundamentals",
+    "topicId": "neural-network-fundamentals",
+    "title": "Neural Network Fundamentals",
+    "description": "Learn how layered transformations and backpropagation let networks model nonlinear functions.",
+    "slug": "neural-network-fundamentals",
+    "level": "intermediate",
+    "status": "published",
+    "tags": ["deep-learning", "neural-networks"],
+    "prerequisites": ["machine-learning-fundamentals", "linear-algebra-fundamentals"],
+    "relatedLessons": ["machine-learning-fundamentals", "knn-fundamentals"],
+    "sections": [
+      {
+        "id": "nn-intro",
+        "type": "markdown",
+        "content": "## Layers and learning\n\nNeural networks stack simple transformations to build increasingly expressive functions. Each layer computes a weighted combination of its inputs, applies a non-linearity, and passes the result forward. Training adjusts those weights to reduce error."
+      },
+      {
+        "id": "nn-formula",
+        "type": "formula",
+        "latex": "a^{(l)} = \\sigma(W^{(l)}a^{(l-1)} + b^{(l)})",
+        "caption": "A single hidden-layer update combines weights, inputs, and a non-linear activation."
+      },
+      {
+        "id": "nn-code",
+        "type": "code",
+        "title": "Mini PyTorch sketch",
+        "language": "python",
+        "content": "import torch\nimport torch.nn as nn\n\nmodel = nn.Sequential(\n    nn.Linear(8, 16),\n    nn.ReLU(),\n    nn.Linear(16, 1)\n)",
+        "output": "A simple feed-forward network is defined",
+        "showLineNumbers": true
+      },
+      {
+        "id": "nn-callout",
+        "type": "callout",
+        "variant": "warning",
+        "title": "Practical insight",
+        "content": "Simple models are interpretable and fast to train; deeper models can capture richer patterns but often need more data and careful tuning."
+      }
+    ],
+    "sources": ["https://pytorch.org/tutorials/beginner/basics/intro.html"],
+    "createdAt": "2026-04-08",
+    "updatedAt": "2026-08-01",
+    "estimatedReadingMinutes": 9
+  },
+  {
+    "id": "git-fundamentals",
+    "topicId": "git-fundamentals",
+    "title": "Git Fundamentals",
+    "description": "Build a safe version-control routine with commits, branches, and collaboration workflows.",
+    "slug": "git-fundamentals",
+    "level": "beginner",
+    "status": "published",
+    "tags": ["git", "workflow"],
+    "prerequisites": [],
+    "relatedLessons": ["python-regular-expressions", "nextjs-fundamentals"],
+    "sections": [
+      {
+        "id": "git-intro",
+        "type": "markdown",
+        "content": "## Version control basics\n\nGit records changes to files over time and lets developers branch away from the main line of work. With a small discipline around commit messages and branch management, teams can move faster without losing context."
+      },
+      {
+        "id": "git-code",
+        "type": "code",
+        "title": "Common workflow",
+        "language": "bash",
+        "content": "git checkout -b feature/docs\ngit status\ngit add .\ngit commit -m \"Add docs update\"\ngit push origin feature/docs",
+        "output": "Creates a branch and pushes a labeled commit",
+        "showLineNumbers": true
+      },
+      {
+        "id": "git-table",
+        "type": "table",
+        "title": "Core concepts",
+        "columns": ["Command", "Purpose"],
+        "rows": [
+          ["git status", "Inspect the working tree"],
+          ["git add", "Stage changes"],
+          ["git commit", "Save a snapshot"],
+          ["git merge", "Integrate branch history"]
+        ]
+      },
+      {
+        "id": "git-callout",
+        "type": "callout",
+        "variant": "info",
+        "title": "Workflow advice",
+        "content": "Commit often and keep each commit focused. Small, understandable changes are much easier to review and recover from later."
+      }
+    ],
+    "sources": ["https://git-scm.com/doc"],
+    "createdAt": "2026-04-28",
+    "updatedAt": "2026-08-09",
+    "estimatedReadingMinutes": 7
+  },
+  {
+    "id": "linear-algebra-fundamentals",
+    "topicId": "linear-algebra-fundamentals",
+    "title": "Linear Algebra Fundamentals",
+    "description": "Use vectors, matrices, and transformations to understand gradients, embeddings, and optimization.",
+    "slug": "linear-algebra-fundamentals",
+    "level": "intermediate",
+    "status": "published",
+    "tags": ["math", "vectors"],
+    "prerequisites": [],
+    "relatedLessons": ["machine-learning-fundamentals", "neural-network-fundamentals"],
+    "sections": [
+      {
+        "id": "linear-intro",
+        "type": "markdown",
+        "content": "## Why linear algebra matters\n\nLinear algebra gives a compact notation for transformation, similarity, and optimization. It is foundational for the geometry of features, the matrix math behind models, and the gradients that updates use during learning."
+      },
+      {
+        "id": "linear-formula",
+        "type": "formula",
+        "latex": "Ax = b",
+        "caption": "Matrix-vector multiplication expresses a linear transformation from input to output."
+      },
+      {
+        "id": "linear-table",
+        "type": "table",
+        "title": "Core objects",
+        "columns": ["Object", "Meaning"],
+        "rows": [
+          ["Vector", "Direction and magnitude"],
+          ["Matrix", "Linear map between spaces"],
+          ["Transpose", "Flips row and column orientation"],
+          ["Dot product", "Measures alignment between vectors"]
+        ]
+      },
+      {
+        "id": "linear-checklist",
+        "type": "checklist",
+        "title": "Study prompts",
+        "items": [
+          "Understand how vectors are added and scaled",
+          "Visualize matrix multiplication as transformations",
+          "Connect matrix shapes to data dimensions"
+        ]
+      }
+    ],
+    "sources": ["https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/"],
+    "createdAt": "2026-05-11",
+    "updatedAt": "2026-08-11",
+    "estimatedReadingMinutes": 9
+  }
+]
