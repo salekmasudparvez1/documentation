@@ -1,5 +1,5 @@
 {
-  "title": "Deep Knowledge Base",
+  "title": "DOC_26",
   "description": "A personal technology knowledge base covering AI, software engineering, web development, and systems thinking.",
   "author": "Salek Masud Parvez",
   "siteUrl": "https://example.com",
@@ -33,6 +33,6 @@
     "placeholder": "Search lessons and concepts"
   },
   "footer": {
-    "copyright": "© 2026 Deep Knowledge Base"
+    "copyright": "© 2026 DOC_26"
   }
 }
