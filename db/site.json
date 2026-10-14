@@ -2,18 +2,18 @@
   "title": "DOC_26",
   "description": "A personal technology knowledge base covering AI, software engineering, web development, and systems thinking.",
   "author": "Salek Masud Parvez",
-  "siteUrl": "https://example.com",
+  "siteUrl": "https://doc-26.vercel.app",
   "defaultLanguage": "en",
-  "defaultTheme": "system",
-  "logoText": "DKB",
+  "defaultTheme": "light",
+  "logoText": "DOC_26",
   "socialLinks": [
     {
       "label": "GitHub",
-      "url": "https://github.com/example"
+      "url": "https://github.com/salekmasudparvez1"
     },
     {
       "label": "LinkedIn",
-      "url": "https://www.linkedin.com"
+      "url": "https://www.linkedin.com/in/salek-masud-parvez"
     }
   ],
   "navigation": {

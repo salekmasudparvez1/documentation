@@ -1,7 +1,7 @@
 [
   {
     "id": "ann-fundamentals",
-    "topicId": "ann-fundamentals",
+    "topicId": "ann-fundamental",
     "title": "Artificial Neural Networks (ANN): From Beginner to Advanced",
     "description": "A complete deep dive into artificial neural networks — from a single neuron to advanced architectures, training tricks, regularization, optimization, and production-grade practices for modern deep learning.",
     "slug": "ann-fundamental",
@@ -18,16 +18,13 @@
     ],
     "prerequisites": [
       "python-fundamentals",
-      "linear-algebra",
-      "calculus-basics",
-      "probability-basics"
+      "linear-algebra-fundamentals"
     ],
     "relatedLessons": [
-      "cnn-fundamentals",
-      "rnn-fundamentals",
-      "transformer-fundamentals",
-      "deep-learning-optimization",
-      "mlops-fundamentals"
+      "machine-learning-fundamentals",
+      "neural-network-fundamentals",
+      "knn-fundamentals",
+      "linear-algebra-fundamentals"
     ],
     "sections": [
       {

@@ -30,10 +30,18 @@ const latest = getLatestLessons(5);
     <h2 class="text-2xl font-semibold text-slate-900 dark:text-white">Recently updated</h2>
     <div class="mt-4 space-y-3">
       {latest.map((lesson) => (
-        <a href={`/docs/${lesson.topicId}`} class="block rounded-xl border border-slate-200 p-4 text-slate-700 transition hover:border-sky-300 dark:border-slate-700 dark:text-slate-200">
-          <div class="text-sm font-medium text-sky-600 dark:text-sky-300">{lesson.title}</div>
-          <div class="mt-1 text-sm text-slate-500 dark:text-slate-400">{lesson.description}</div>
-        </a>
+        {(() => {
+          const topic = registry.publishedTopics.find((entry) => entry.id === lesson.topicId);
+          const category = topic
+            ? registry.publishedCategories.find((entry) => entry.id === topic.categoryId)
+            : undefined;
+          return (
+            <a href={topic && category ? `/docs/${category.slug}/${topic.slug}/${lesson.slug}` : '/docs'} class="block rounded-xl border border-slate-200 p-4 text-slate-700 transition hover:border-sky-300 dark:border-slate-700 dark:text-slate-200">
+              <div class="text-sm font-medium text-sky-600 dark:text-sky-300">{lesson.title}</div>
+              <div class="mt-1 text-sm text-slate-500 dark:text-slate-400">{lesson.description}</div>
+            </a>
+          );
+        })()}
       ))}
     </div>
   </section>

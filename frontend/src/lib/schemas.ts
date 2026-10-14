@@ -177,7 +177,7 @@ export const lessonSchema = z.object({
   title: z.string(),
   description: z.string(),
   slug: z.string(),
-  level: z.enum(['beginner', 'intermediate', 'advanced']),
+  level: z.string().trim().min(1),
   status: z.enum(['draft', 'published', 'archived']),
   tags: z.array(z.string()),
   prerequisites: z.array(z.string()).optional(),
