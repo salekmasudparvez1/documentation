@@ -1,0 +1,60 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Sidebar from '../components/Sidebar.astro';
+import { registry } from '../lib/content-registry';
+
+const { site } = registry;
+const { title = site.title, description = site.description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#0f172a" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen bg-[var(--bg)] text-[var(--text)] antialiased">
+    <Header />
+    <div class="mx-auto block max-w-7xl px-4 py-6 sm:px-6 lg:hidden lg:px-8">
+      <Sidebar />
+    </div>
+    <div class="mx-auto flex max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:px-8">
+      <div class="hidden w-72 lg:block">
+        <Sidebar />
+      </div>
+      <main class="min-w-0 flex-1">
+        <slot />
+      </main>
+    </div>
+    <footer class="border-t border-slate-200 bg-white/80 py-6 text-center text-sm text-slate-600 dark:border-slate-800 dark:bg-slate-950/80 dark:text-slate-300">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">{site.footer.copyright}</div>
+    </footer>
+
+    <script is:inline>
+      document.addEventListener('click', async (event) => {
+        const trigger = event.target.closest('[data-copy-target]');
+        if (!trigger) return;
+        const block = document.querySelector(`[data-code-block="${trigger.dataset.copyTarget}"]`);
+        if (!block) return;
+        const text = block.textContent || '';
+        try {
+          await navigator.clipboard.writeText(text);
+          const original = trigger.textContent;
+          trigger.textContent = 'Copied';
+          setTimeout(() => {
+            trigger.textContent = original;
+          }, 1200);
+        } catch (error) {
+          trigger.textContent = 'Error';
+        }
+      });
+    </script>
+  </body>
+</html>

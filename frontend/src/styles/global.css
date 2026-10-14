@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #f8fafc;
+  --panel: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --border: rgba(15, 23, 42, 0.12);
+  --shadow: rgba(15, 23, 42, 0.06);
+  --accent: #0284c7;
+}
+
+.dark {
+  --bg: #020817;
+  --panel: #0f172a;
+  --text: #e2e8f0;
+  --muted: #cbd5e1;
+  --border: rgba(148, 163, 184, 0.25);
+  --shadow: rgba(15, 23, 42, 0.35);
+  --accent: #38bdf8;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, "Segoe UI", sans-serif;
+}
+
+body {
+  background-image: radial-gradient(circle at top, rgba(14, 165, 233, 0.08), transparent 35%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  text-decoration: none;
+}
+
+.prose {
+  color: var(--text);
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  scroll-margin-top: 4rem;
+}
+
+.prose p,
+.prose li,
+.prose blockquote {
+  line-height: 1.8;
+}
+
+pre {
+  overflow-x: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

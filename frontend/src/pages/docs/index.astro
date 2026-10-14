@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getLatestLessons, registry } from '../../lib/content-registry';
+
+const categories = registry.publishedCategories;
+const latest = getLatestLessons(5);
+---
+
+<BaseLayout title={`Documentation | ${registry.site.title}`} description="Browse the knowledge base by category and topic.">
+  <section class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-8">
+    <p class="text-sm font-semibold uppercase tracking-[0.2em] text-sky-600 dark:text-sky-300">Documentation</p>
+    <h1 class="mt-3 text-4xl font-bold text-slate-900 dark:text-white">Explore every topic</h1>
+    <p class="mt-4 max-w-2xl text-slate-600 dark:text-slate-300">Browse the categories and lessons designed for practical learning across AI, web software, developer workflows, and the underlying mathematical ideas.</p>
+  </section>
+
+  <div class="mt-8 grid gap-6 lg:grid-cols-2">
+    {categories.map((category) => (
+      <a href={`/docs/${category.slug}`} class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-sky-300 dark:border-slate-800 dark:bg-slate-900">
+        <div class="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-sky-100 text-lg text-sky-700 dark:bg-sky-950 dark:text-sky-300">{category.icon || '•'}</div>
+        <h2 class="text-xl font-semibold text-slate-900 dark:text-white">{category.title}</h2>
+        <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">{category.description}</p>
+      </a>
+    ))}
+  </div>
+
+  <section class="mt-8 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+    <h2 class="text-2xl font-semibold text-slate-900 dark:text-white">Recently updated</h2>
+    <div class="mt-4 space-y-3">
+      {latest.map((lesson) => (
+        <a href={`/docs/${lesson.topicId}`} class="block rounded-xl border border-slate-200 p-4 text-slate-700 transition hover:border-sky-300 dark:border-slate-700 dark:text-slate-200">
+          <div class="text-sm font-medium text-sky-600 dark:text-sky-300">{lesson.title}</div>
+          <div class="mt-1 text-sm text-slate-500 dark:text-slate-400">{lesson.description}</div>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

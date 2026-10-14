@@ -6,15 +6,29 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
+    "dev": "node scripts/generate-search.mjs && astro dev --host 0.0.0.0",
+    "build": "node scripts/generate-search.mjs && astro build",
+    "preview": "astro preview --host 0.0.0.0",
+    "check": "astro check",
+    "validate:content": "node scripts/validate-content.mjs",
+    "test": "vitest run",
+    "lint": "npm run check",
     "astro": "astro"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
+    "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.8",
+    "marked": "^18.1.1",
+    "sanitize-html": "^2.18.0",
     "shiki": "^4.5.0",
+    "tailwindcss": "^4.3.3",
     "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@types/sanitize-html": "^2.16.2",
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.4"
   }
 }

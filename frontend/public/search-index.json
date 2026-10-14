@@ -1,0 +1,56 @@
+[
+  {
+    "title": "Python Fundamentals",
+    "description": "Learn Python syntax, primitives, control flow, and basic data structures used in day-to-day automation and analysis.",
+    "url": "/docs/programming/python-fundamentals/python-fundamentals",
+    "content": "Python Fundamentals Learn Python syntax, primitives, control flow, and basic data structures used in day-to-day automation and analysis. ## Why Python matters\n\nPython emphasizes readable syntax and a deep standard library. That makes it an excellent first language for scripting, data analysis, automation, and experimentation with models.\n\nThe key is to learn the rule set once and then reuse it across many domains. Write small, testable functions before you try to abstract large behavior. Small functions are easier to reason about and debug. Write a function that accepts and returns data Use a dictionary for keyed lookups Practice list comprehension Read the Python docs for standard-library modules"
+  },
+  {
+    "title": "Python Regular Expressions",
+    "description": "Use regex to validate, search, and transform text reliably in Python.",
+    "url": "/docs/programming/python-regular-expressions/python-regular-expressions",
+    "content": "Python Regular Expressions Use regex to validate, search, and transform text reliably in Python. ## Pattern matching\n\nRegular expressions are a compact way to describe patterns in text. Use them for validation, filtering, extraction, and cleanup tasks.\n\nThe challenge is not memorizing every token but learning the common building blocks: character classes, groups, quantifiers, and anchors. Regex is powerful but can become difficult to maintain when the pattern grows too complex. Prefer simple patterns and dedicated parsers when the input format is large or nested."
+  },
+  {
+    "title": "JavaScript Fundamentals",
+    "description": "Understand variables, functions, iteration, and asynchronous patterns in modern JavaScript.",
+    "url": "/docs/web-development/javascript-fundamentals/javascript-fundamentals",
+    "content": "JavaScript Fundamentals Understand variables, functions, iteration, and asynchronous patterns in modern JavaScript. ## JavaScript basics\n\nJavaScript is the language of interactive web experiences. It blends expression-based syntax with event-driven execution, which makes it flexible for browser logic, API calls, and tooling. Prefer clear, small functions and explicit async handling over deeply nested callbacks."
+  },
+  {
+    "title": "Next.js Fundamentals",
+    "description": "Explore route structure, rendering strategies, and data flow in a Next.js application.",
+    "url": "/docs/web-development/nextjs-fundamentals/nextjs-fundamentals",
+    "content": "Next.js Fundamentals Explore route structure, rendering strategies, and data flow in a Next.js application. ## Routing and rendering\n\nNext.js makes page routing and rendering choices explicit. You get file-based routing, server and client components, and a flexible deployment story for static, hybrid, or server-rendered applications. Choose the render strategy based on freshness needs, user interaction, and performance requirements."
+  },
+  {
+    "title": "Machine Learning Fundamentals",
+    "description": "Understand how models learn from data, how errors are measured, and how assumptions shape outcomes.",
+    "url": "/docs/ai-ml/machine-learning-fundamentals/machine-learning-fundamentals",
+    "content": "Machine Learning Fundamentals Understand how models learn from data, how errors are measured, and how assumptions shape outcomes. ## ML as prediction\n\nMachine learning is the practice of teaching algorithms to detect patterns in data and generalize to new examples. The core workflow includes gathering data, choosing a model, training it, and evaluating how well it performs on unseen samples. A model that fits training data well can still fail on real-world data if the distribution shifts or the data contains bias."
+  },
+  {
+    "title": "K-Nearest Neighbors",
+    "description": "A simple but powerful classifier built from proximity in feature space.",
+    "url": "/docs/ai-ml/knn-fundamentals/knn-fundamentals",
+    "content": "K-Nearest Neighbors A simple but powerful classifier built from proximity in feature space. ## Intuition behind KNN\n\nK-nearest neighbors classifies a new point by looking at the closest labeled examples. It is easy to explain and useful for understanding how distance-based learning works before moving to more elaborate models. Normalize features when scales differ Choose k carefully Measure performance on held-out validation data"
+  },
+  {
+    "title": "Neural Network Fundamentals",
+    "description": "Learn how layered transformations and backpropagation let networks model nonlinear functions.",
+    "url": "/docs/ai-ml/neural-network-fundamentals/neural-network-fundamentals",
+    "content": "Neural Network Fundamentals Learn how layered transformations and backpropagation let networks model nonlinear functions. ## Layers and learning\n\nNeural networks stack simple transformations to build increasingly expressive functions. Each layer computes a weighted combination of its inputs, applies a non-linearity, and passes the result forward. Training adjusts those weights to reduce error. Simple models are interpretable and fast to train; deeper models can capture richer patterns but often need more data and careful tuning."
+  },
+  {
+    "title": "Git Fundamentals",
+    "description": "Build a safe version-control routine with commits, branches, and collaboration workflows.",
+    "url": "/docs/tools/git-fundamentals/git-fundamentals",
+    "content": "Git Fundamentals Build a safe version-control routine with commits, branches, and collaboration workflows. ## Version control basics\n\nGit records changes to files over time and lets developers branch away from the main line of work. With a small discipline around commit messages and branch management, teams can move faster without losing context. Commit often and keep each commit focused. Small, understandable changes are much easier to review and recover from later."
+  },
+  {
+    "title": "Linear Algebra Fundamentals",
+    "description": "Use vectors, matrices, and transformations to understand gradients, embeddings, and optimization.",
+    "url": "/docs/tools/linear-algebra-fundamentals/linear-algebra-fundamentals",
+    "content": "Linear Algebra Fundamentals Use vectors, matrices, and transformations to understand gradients, embeddings, and optimization. ## Why linear algebra matters\n\nLinear algebra gives a compact notation for transformation, similarity, and optimization. It is foundational for the geometry of features, the matrix math behind models, and the gradients that updates use during learning. Understand how vectors are added and scaled Visualize matrix multiplication as transformations Connect matrix shapes to data dimensions"
+  }
+]
