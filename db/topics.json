@@ -1,5 +1,22 @@
 [
   {
+  "id": "rnn-fundamentals",
+  "categoryId": "deep-learning",
+  "title": "Recurrent Neural Networks (RNN) Fundamentals",
+  "description": "Learn the fundamentals of recurrent neural networks, including sequential data processing, hidden states, recurrent connections, backpropagation through time (BPTT), vanishing gradients, and applications in NLP and time-series forecasting.",
+  "slug": "rnn-fundamentals",
+  "order": 1,
+  "status": "published",
+  "tags": [
+    "deep-learning",
+    "rnn",
+    "recurrent-neural-networks",
+    "sequence-modeling"
+  ],
+  "icon": "brain"
+}
+  ,
+  {
     "id": "ann-fundamental",
     "categoryId": "deep-learning",
     "title": "Artificial Neural Networks Fundamentals",
